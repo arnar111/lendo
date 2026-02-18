@@ -7,9 +7,14 @@ export default function BottomNav() {
   const { user } = useAuth();
   const { conversations } = useConversations();
 
-  // Count conversations with unread messages (where last sender isn't current user)
+  // Count conversations with unread messages (must be participant + last sender isn't me)
   const unreadCount = user
-    ? conversations.filter(c => c.lastMessageSenderId && c.lastMessageSenderId !== user.uid && c.lastMessageAt).length
+    ? conversations.filter(c =>
+        c.participantIds.includes(user.uid) &&
+        c.lastMessageSenderId &&
+        c.lastMessageSenderId !== user.uid &&
+        c.lastMessageAt
+      ).length
     : 0;
 
   const NAV = [
