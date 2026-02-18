@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Navigate } from 'react-router-dom';
 import { ArrowLeft, ImagePlus } from 'lucide-react';
 import { useItems, useAuth } from '../store/useStore';
 import { CATEGORIES } from '../types';

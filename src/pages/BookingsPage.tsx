@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Navigate } from 'react-router-dom';
 import { Calendar, Clock, ChevronRight, Package, CheckCircle2, XCircle, AlertCircle } from 'lucide-react';
 import { useAuth, useBookings } from '../store/useStore';
 import { BOOKING_STATUS_LABELS, BOOKING_STATUS_COLORS } from '../types';

@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Navigate } from 'react-router-dom';
 import { MessageCircle } from 'lucide-react';
 import { useAuth, useConversations, useUsers } from '../store/useStore';
 

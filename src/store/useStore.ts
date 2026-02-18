@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { onAuthStateChanged, type User as FirebaseUser } from 'firebase/auth';
 import { auth } from '../lib/firebase';
@@ -17,37 +17,43 @@ import * as favoritesService from '../services/favorites';
 import { MOCK_USERS, MOCK_ITEMS, MOCK_CONVERSATIONS, MOCK_MESSAGES, MOCK_REVIEWS, MOCK_BOOKINGS } from '../data/mock';
 
 // Set to true to use mock data instead of Firebase
-const USE_MOCK = false;
+const USE_MOCK = true;
+
+// ─── HELPERS ─────────────────────────────────────────────────────────────────
+
+function load<T>(key: string, fallback: T): T {
+  try { const raw = localStorage.getItem('leigja_' + key); return raw ? JSON.parse(raw) : fallback; } catch { return fallback; }
+}
+function save<T>(key: string, data: T) { localStorage.setItem('leigja_' + key, JSON.stringify(data)); }
 
 // ─── AUTH ────────────────────────────────────────────────────────────────────
 
 let _listeners: Array<(u: User | null) => void> = [];
-let _currentUser: User | null = null;
-let _firebaseUser: FirebaseUser | null = null;
-let _authInitialized = false;
+let _currentUser: User | null = USE_MOCK ? load<User | null>('currentUser', null) : null;
+let _authInitialized = USE_MOCK;
 
-// Listen for auth state changes once
-onAuthStateChanged(auth, async (fbUser) => {
-  _firebaseUser = fbUser;
-  if (fbUser) {
-    const profile = await authService.getUserProfile(fbUser.uid);
-    _currentUser = profile || {
-      uid: fbUser.uid,
-      displayName: fbUser.displayName || fbUser.email?.split('@')[0] || 'Notandi',
-      email: fbUser.email || '',
-      photoURL: fbUser.photoURL || undefined,
-      createdAt: new Date().toISOString(),
-      lastActiveAt: new Date().toISOString(),
-      defaultRadiusKm: 5,
-      ratingAsOwnerAvg: 0, ratingAsRenterAvg: 0,
-      ratingCountAsOwner: 0, ratingCountAsRenter: 0,
-    };
-  } else {
-    _currentUser = null;
-  }
-  _authInitialized = true;
-  _listeners.forEach(l => l(_currentUser));
-});
+if (!USE_MOCK) {
+  onAuthStateChanged(auth, async (fbUser) => {
+    if (fbUser) {
+      const profile = await authService.getUserProfile(fbUser.uid);
+      _currentUser = profile || {
+        uid: fbUser.uid,
+        displayName: fbUser.displayName || fbUser.email?.split('@')[0] || 'Notandi',
+        email: fbUser.email || '',
+        photoURL: fbUser.photoURL || undefined,
+        createdAt: new Date().toISOString(),
+        lastActiveAt: new Date().toISOString(),
+        defaultRadiusKm: 5,
+        ratingAsOwnerAvg: 0, ratingAsRenterAvg: 0,
+        ratingCountAsOwner: 0, ratingCountAsRenter: 0,
+      };
+    } else {
+      _currentUser = null;
+    }
+    _authInitialized = true;
+    _listeners.forEach(l => l(_currentUser));
+  });
+}
 
 export function useAuth() {
   const [user, setUser] = useState<User | null>(_currentUser);
@@ -64,7 +70,7 @@ export function useAuth() {
     if (USE_MOCK) {
       const found = MOCK_USERS.find(u => u.email === email);
       const u: User = found || { uid: 'user_' + Date.now(), displayName: email.split('@')[0], email, createdAt: new Date().toISOString(), lastActiveAt: new Date().toISOString(), defaultRadiusKm: 5, ratingAsOwnerAvg: 0, ratingAsRenterAvg: 0, ratingCountAsOwner: 0, ratingCountAsRenter: 0 };
-      _currentUser = u; _listeners.forEach(l => l(u)); return true;
+      _currentUser = u; save('currentUser', u); _listeners.forEach(l => l(u)); return true;
     }
     await authService.signIn(email, password);
     return true;
@@ -73,20 +79,24 @@ export function useAuth() {
   const register = useCallback(async (name: string, email: string, password: string) => {
     if (USE_MOCK) {
       const u: User = { uid: 'user_' + Date.now(), displayName: name, email, createdAt: new Date().toISOString(), lastActiveAt: new Date().toISOString(), defaultRadiusKm: 5, ratingAsOwnerAvg: 0, ratingAsRenterAvg: 0, ratingCountAsOwner: 0, ratingCountAsRenter: 0 };
-      _currentUser = u; _listeners.forEach(l => l(u)); return true;
+      _currentUser = u; save('currentUser', u); _listeners.forEach(l => l(u)); return true;
     }
     await authService.signUp(email, password, name);
     return true;
   }, []);
 
   const loginWithGoogle = useCallback(async () => {
+    if (USE_MOCK) {
+      const u: User = { uid: 'user_google', displayName: 'Google Notandi', email: 'google@gmail.com', createdAt: new Date().toISOString(), lastActiveAt: new Date().toISOString(), defaultRadiusKm: 5, ratingAsOwnerAvg: 0, ratingAsRenterAvg: 0, ratingCountAsOwner: 0, ratingCountAsRenter: 0 };
+      _currentUser = u; save('currentUser', u); _listeners.forEach(l => l(u)); return true;
+    }
     await authService.signInWithGoogle();
     return true;
   }, []);
 
   const logout = useCallback(async () => {
     if (USE_MOCK) {
-      _currentUser = null; _listeners.forEach(l => l(null)); return;
+      _currentUser = null; localStorage.removeItem('leigja_currentUser'); _listeners.forEach(l => l(null)); return;
     }
     await authService.logout();
   }, []);
@@ -95,6 +105,7 @@ export function useAuth() {
     if (!_currentUser) return;
     if (USE_MOCK) {
       _currentUser = { ..._currentUser, ...updates };
+      save('currentUser', _currentUser);
       _listeners.forEach(l => l(_currentUser)); return;
     }
     await usersService.updateUser(_currentUser.uid, updates);
@@ -108,219 +119,66 @@ export function useAuth() {
 // ─── ITEMS ───────────────────────────────────────────────────────────────────
 
 export function useItems(filters?: itemsService.ItemFilters) {
-  const qc = useQueryClient();
+  const [mockItems, setMockItems] = useState<Item[]>(USE_MOCK ? load<Item[]>('items', MOCK_ITEMS) : []);
 
-  const { data: items = [], isLoading } = useQuery({
+  const { data: fbItems = [] } = useQuery({
     queryKey: ['items', filters],
-    queryFn: () => USE_MOCK ? Promise.resolve(MOCK_ITEMS) : itemsService.queryItems(filters),
+    queryFn: () => itemsService.queryItems(filters),
     staleTime: 30_000,
+    enabled: !USE_MOCK,
   });
 
-  const addItemMutation = useMutation({
-    mutationFn: (data: Omit<Item, 'id' | 'createdAt' | 'updatedAt' | 'ratingAvg' | 'ratingCount' | 'status'>) =>
-      itemsService.createItem(data),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ['items'] }),
-  });
+  const items = USE_MOCK ? mockItems : fbItems;
 
-  const updateItemMutation = useMutation({
-    mutationFn: ({ id, data }: { id: string; data: Partial<Item> }) => itemsService.updateItem(id, data),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ['items'] }),
-  });
+  const addItem = useCallback((data: Omit<Item, 'id' | 'createdAt' | 'updatedAt' | 'ratingAvg' | 'ratingCount' | 'status'>) => {
+    if (USE_MOCK) {
+      const n: Item = { ...data, id: 'item_' + Date.now(), ratingAvg: 0, ratingCount: 0, status: 'virkt', createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() };
+      setMockItems(prev => { const next = [n, ...prev]; save('items', next); return next; });
+      return n;
+    }
+    return itemsService.createItem(data);
+  }, []);
 
-  const addItem = useCallback(
-    (data: Omit<Item, 'id' | 'createdAt' | 'updatedAt' | 'ratingAvg' | 'ratingCount' | 'status'>) =>
-      addItemMutation.mutateAsync(data),
-    [addItemMutation],
-  );
+  const updateItem = useCallback((id: string, updates: Partial<Item>) => {
+    if (USE_MOCK) {
+      setMockItems(prev => { const next = prev.map(i => i.id === id ? { ...i, ...updates, updatedAt: new Date().toISOString() } : i); save('items', next); return next; });
+      return;
+    }
+    return itemsService.updateItem(id, updates);
+  }, []);
 
-  const updateItem = useCallback(
-    (id: string, updates: Partial<Item>) => updateItemMutation.mutateAsync({ id, data: updates }),
-    [updateItemMutation],
-  );
-
-  return { items, isLoading, addItem, updateItem };
-}
-
-export function useItemsNearby(lat: number | null, lng: number | null, radiusKm: number, filters?: itemsService.ItemFilters) {
-  const { data: items = [], isLoading } = useQuery({
-    queryKey: ['items-nearby', lat, lng, radiusKm, filters],
-    queryFn: () => {
-      if (!lat || !lng) return Promise.resolve([]);
-      if (USE_MOCK) return Promise.resolve(MOCK_ITEMS);
-      return itemsService.queryItemsNearby(lat, lng, radiusKm, filters);
-    },
-    enabled: lat !== null && lng !== null,
-    staleTime: 30_000,
-  });
-
-  return { items, isLoading };
-}
-
-// ─── CONVERSATIONS ───────────────────────────────────────────────────────────
-
-export function useConversations() {
-  const [convs, setConvs] = useState<Conversation[]>([]);
-  const [msgs, setMsgs] = useState<Map<string, Message[]>>(new Map());
-  const { user } = useAuth();
-
-  // Subscribe to conversations
-  useEffect(() => {
-    if (!user?.uid) { setConvs([]); return; }
-    if (USE_MOCK) { setConvs(MOCK_CONVERSATIONS); return; }
-    const unsub = convoService.subscribeToConversations(user.uid, setConvs);
-    return unsub;
-  }, [user?.uid]);
-
-  const getOrCreateConversation = useCallback(
-    async (u1: string, u2: string, itemId?: string, itemTitle?: string): Promise<Conversation> => {
-      if (USE_MOCK) {
-        const ex = MOCK_CONVERSATIONS.find(c => c.participantIds.includes(u1) && c.participantIds.includes(u2));
-        if (ex) return ex;
-        const c: Conversation = { id: 'conv_' + Date.now(), participantIds: [u1, u2], itemId, itemTitle, createdAt: new Date().toISOString() };
-        return c;
-      }
-      return convoService.getOrCreateConversation(u1, u2, itemId, itemTitle);
-    }, [],
-  );
-
-  const sendMessage = useCallback(
-    async (cid: string, sid: string, text: string) => {
-      if (USE_MOCK) return { id: 'msg_' + Date.now(), conversationId: cid, senderId: sid, text, createdAt: new Date().toISOString() };
-      return convoService.sendMessage(cid, sid, text);
-    }, [],
-  );
-
-  const subscribeToMessages = useCallback(
-    (cid: string, callback: (msgs: Message[]) => void) => {
-      if (USE_MOCK) {
-        callback(MOCK_MESSAGES.filter(m => m.conversationId === cid));
-        return () => {};
-      }
-      return convoService.subscribeToMessages(cid, callback);
-    }, [],
-  );
-
-  const getMessages = useCallback(
-    (cid: string) => {
-      if (USE_MOCK) return MOCK_MESSAGES.filter(m => m.conversationId === cid);
-      return msgs.get(cid) || [];
-    }, [msgs],
-  );
-
-  return { conversations: convs, getOrCreateConversation, sendMessage, getMessages, subscribeToMessages };
-}
-
-// ─── REVIEWS ─────────────────────────────────────────────────────────────────
-
-export function useReviews() {
-  const qc = useQueryClient();
-
-  const addReviewMutation = useMutation({
-    mutationFn: (data: Omit<Review, 'id' | 'createdAt'>) => reviewsService.createReview(data),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ['reviews'] }),
-  });
-
-  const addReview = useCallback(
-    (r: Omit<Review, 'id' | 'createdAt'>) => addReviewMutation.mutateAsync(r),
-    [addReviewMutation],
-  );
-
-  const getReviewsFor = useCallback(
-    async (tid: string, tt?: string) => {
-      if (USE_MOCK) return MOCK_REVIEWS.filter(r => r.targetId === tid && (!tt || r.targetType === tt));
-      return reviewsService.getReviewsForTarget(tid, tt as Review['targetType']);
-    }, [],
-  );
-
-  return { addReview, getReviewsFor };
-}
-
-// ─── USERS ───────────────────────────────────────────────────────────────────
-
-export function useUsers() {
-  const getUser = useCallback(
-    async (uid: string): Promise<User | undefined> => {
-      if (USE_MOCK) return MOCK_USERS.find(u => u.uid === uid);
-      const u = await usersService.getUser(uid);
-      return u || undefined;
-    }, [],
-  );
-
-  return { users: USE_MOCK ? MOCK_USERS : [], getUser };
-}
-
-// ─── BOOKINGS ────────────────────────────────────────────────────────────────
-
-export function useBookings() {
-  const qc = useQueryClient();
-  const { user } = useAuth();
-
-  const { data: bookings = [], isLoading } = useQuery({
-    queryKey: ['bookings', user?.uid],
-    queryFn: () => {
-      if (!user?.uid) return Promise.resolve([]);
-      if (USE_MOCK) return Promise.resolve(MOCK_BOOKINGS);
-      return bookingsService.getBookingsForUser(user.uid);
-    },
-    enabled: !!user?.uid,
-    staleTime: 15_000,
-  });
-
-  const createBookingMutation = useMutation({
-    mutationFn: (data: Omit<Booking, 'id' | 'createdAt' | 'updatedAt' | 'status' | 'serviceFeeISK'>) =>
-      bookingsService.createBooking(data),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ['bookings'] }),
-  });
-
-  const updateBookingMutation = useMutation({
-    mutationFn: ({ id, status }: { id: string; status: BookingStatus }) =>
-      bookingsService.updateBookingStatus(id, status),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ['bookings'] }),
-  });
-
-  const createBooking = useCallback(
-    (b: Omit<Booking, 'id' | 'createdAt' | 'updatedAt' | 'status' | 'serviceFeeISK'>) =>
-      createBookingMutation.mutateAsync(b),
-    [createBookingMutation],
-  );
-
-  const updateBooking = useCallback(
-    (id: string, status: BookingStatus) => updateBookingMutation.mutateAsync({ id, status }),
-    [updateBookingMutation],
-  );
-
-  const getBookingsForUser = useCallback(
-    (uid: string) => bookings.filter(b => b.renterId === uid || b.ownerId === uid),
-    [bookings],
-  );
-
-  const getBookingsForItem = useCallback(
-    (itemId: string) => bookings.filter(b => b.itemId === itemId && !['cancelled', 'rejected'].includes(b.status)),
-    [bookings],
-  );
-
-  return { bookings, isLoading, createBooking, updateBooking, getBookingsForUser, getBookingsForItem };
+  return { items, addItem, updateItem };
 }
 
 // ─── GEO ─────────────────────────────────────────────────────────────────────
 
+// Default location: Reykjavík center
+const DEFAULT_LOCATION = { lat: 64.1466, lng: -21.9426 };
+
 export function useGeo() {
-  const [location, setLocation] = useState<{ lat: number; lng: number } | null>(null);
+  const [location, setLocation] = useState<{ lat: number; lng: number }>(DEFAULT_LOCATION);
+  const [hasRealLocation, setHasRealLocation] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
+  const requestLocation = useCallback(() => {
     if (!navigator.geolocation) {
       setError('Geolocation er ekki stutt');
       return;
     }
     navigator.geolocation.getCurrentPosition(
-      (pos) => setLocation({ lat: pos.coords.latitude, lng: pos.coords.longitude }),
+      (pos) => {
+        setLocation({ lat: pos.coords.latitude, lng: pos.coords.longitude });
+        setHasRealLocation(true);
+      },
       (err) => setError(err.message),
       { enableHighAccuracy: false, timeout: 10000 },
     );
   }, []);
 
-  return { location, error };
+  // Try to get location on mount
+  useEffect(() => { requestLocation(); }, [requestLocation]);
+
+  return { location, hasRealLocation, error, requestLocation };
 }
 
 export function distanceKm(lat1: number, lng1: number, lat2: number, lng2: number): number {
@@ -331,35 +189,202 @@ export function distanceKm(lat1: number, lng1: number, lat2: number, lng2: numbe
   return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 }
 
+// ─── CONVERSATIONS (sync API) ────────────────────────────────────────────────
+
+export function useConversations() {
+  const [convs, setConvs] = useState<Conversation[]>(USE_MOCK ? load<Conversation[]>('conversations', MOCK_CONVERSATIONS) : []);
+  const [msgs, setMsgs] = useState<Message[]>(USE_MOCK ? load<Message[]>('messages', MOCK_MESSAGES) : []);
+  const { user } = useAuth();
+
+  // Firebase: subscribe to conversations
+  useEffect(() => {
+    if (USE_MOCK || !user?.uid) return;
+    const unsub = convoService.subscribeToConversations(user.uid, setConvs);
+    return unsub;
+  }, [user?.uid]);
+
+  const getOrCreateConversation = useCallback((u1: string, u2: string, itemId?: string, itemTitle?: string): Conversation => {
+    if (USE_MOCK) {
+      const ex = convs.find(c => c.participantIds.includes(u1) && c.participantIds.includes(u2) && (!itemId || c.itemId === itemId));
+      if (ex) return ex;
+      const c: Conversation = { id: 'conv_' + Date.now(), participantIds: [u1, u2], itemId, itemTitle, createdAt: new Date().toISOString() };
+      setConvs(prev => { const next = [c, ...prev]; save('conversations', next); return next; });
+      return c;
+    }
+    // For Firebase, return a placeholder and create async
+    const ex = convs.find(c => c.participantIds.includes(u1) && c.participantIds.includes(u2) && (!itemId || c.itemId === itemId));
+    if (ex) return ex;
+    const tempId = 'conv_' + Date.now();
+    const temp: Conversation = { id: tempId, participantIds: [u1, u2], itemId, itemTitle, createdAt: new Date().toISOString() };
+    // Fire and forget — the subscription will update convs
+    convoService.getOrCreateConversation(u1, u2, itemId, itemTitle).then(real => {
+      if (real.id !== tempId) {
+        setConvs(prev => prev.map(c => c.id === tempId ? real : c));
+      }
+    });
+    setConvs(prev => [temp, ...prev]);
+    return temp;
+  }, [convs]);
+
+  const sendMessage = useCallback((cid: string, sid: string, text: string) => {
+    const m: Message = { id: 'msg_' + Date.now(), conversationId: cid, senderId: sid, text, createdAt: new Date().toISOString() };
+    if (USE_MOCK) {
+      setMsgs(prev => { const next = [...prev, m]; save('messages', next); return next; });
+      setConvs(prev => { const next = prev.map(c => c.id === cid ? { ...c, lastMessageText: text, lastMessageAt: m.createdAt, lastMessageSenderId: sid } : c); save('conversations', next); return next; });
+    } else {
+      // Optimistic update + fire async
+      setMsgs(prev => [...prev, m]);
+      convoService.sendMessage(cid, sid, text);
+    }
+    return m;
+  }, []);
+
+  const getMessages = useCallback((cid: string) => msgs.filter(m => m.conversationId === cid), [msgs]);
+
+  // For Firebase real-time message subscription (used by ChatPage)
+  const subscribeToMessages = useCallback((cid: string, callback: (msgs: Message[]) => void) => {
+    if (USE_MOCK) {
+      callback(msgs.filter(m => m.conversationId === cid));
+      return () => {};
+    }
+    return convoService.subscribeToMessages(cid, callback);
+  }, [msgs]);
+
+  return { conversations: convs, getOrCreateConversation, sendMessage, getMessages, subscribeToMessages };
+}
+
+// ─── REVIEWS (sync API) ──────────────────────────────────────────────────────
+
+export function useReviews() {
+  const [reviews, setReviews] = useState<Review[]>(USE_MOCK ? load<Review[]>('reviews', MOCK_REVIEWS) : []);
+
+  // Load reviews from Firebase once
+  useEffect(() => {
+    if (USE_MOCK) return;
+    // We'll load reviews on demand via getReviewsFor
+  }, []);
+
+  const addReview = useCallback((r: Omit<Review, 'id' | 'createdAt'>) => {
+    const nr: Review = { ...r, id: 'rev_' + Date.now(), createdAt: new Date().toISOString() };
+    if (USE_MOCK) {
+      setReviews(prev => { const next = [nr, ...prev]; save('reviews', next); return next; });
+    } else {
+      setReviews(prev => [nr, ...prev]);
+      reviewsService.createReview(r);
+    }
+    return nr;
+  }, []);
+
+  // SYNC API — returns array immediately
+  const getReviewsFor = useCallback((tid: string, tt?: string) => {
+    return reviews.filter(r => r.targetId === tid && (!tt || r.targetType === tt));
+  }, [reviews]);
+
+  return { reviews, addReview, getReviewsFor };
+}
+
+// ─── USERS (sync API) ────────────────────────────────────────────────────────
+
+export function useUsers() {
+  const [userCache, setUserCache] = useState<Map<string, User>>(
+    USE_MOCK ? new Map(MOCK_USERS.map(u => [u.uid, u])) : new Map()
+  );
+
+  // SYNC API — returns User | undefined immediately
+  const getUser = useCallback((uid: string): User | undefined => {
+    const cached = userCache.get(uid);
+    if (cached) return cached;
+
+    if (!USE_MOCK) {
+      // Fire async fetch, will update cache
+      usersService.getUser(uid).then(u => {
+        if (u) setUserCache(prev => new Map(prev).set(uid, u));
+      });
+    }
+    return undefined;
+  }, [userCache]);
+
+  return { users: USE_MOCK ? MOCK_USERS : [...userCache.values()], getUser };
+}
+
+// ─── BOOKINGS ────────────────────────────────────────────────────────────────
+
+export function useBookings() {
+  const [bookings, setBookings] = useState<Booking[]>(USE_MOCK ? load<Booking[]>('bookings', MOCK_BOOKINGS) : []);
+  const { user } = useAuth();
+
+  // Load from Firebase
+  useEffect(() => {
+    if (USE_MOCK || !user?.uid) return;
+    bookingsService.getBookingsForUser(user.uid).then(setBookings);
+  }, [user?.uid]);
+
+  const createBooking = useCallback((b: Omit<Booking, 'id' | 'createdAt' | 'updatedAt' | 'status' | 'serviceFeeISK'>) => {
+    const serviceFeeISK = Math.round(b.totalISK * 0.12);
+    const nb: Booking = { ...b, id: 'book_' + Date.now(), serviceFeeISK, status: 'pending', createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() };
+    if (USE_MOCK) {
+      setBookings(prev => { const next = [nb, ...prev]; save('bookings', next); return next; });
+    } else {
+      setBookings(prev => [nb, ...prev]);
+      bookingsService.createBooking(b);
+    }
+    return nb;
+  }, []);
+
+  const updateBooking = useCallback((id: string, status: BookingStatus) => {
+    setBookings(prev => {
+      const next = prev.map(b => b.id === id ? { ...b, status, updatedAt: new Date().toISOString() } : b);
+      if (USE_MOCK) save('bookings', next);
+      return next;
+    });
+    if (!USE_MOCK) bookingsService.updateBookingStatus(id, status);
+  }, []);
+
+  const getBookingsForUser = useCallback((uid: string) =>
+    bookings.filter(b => b.renterId === uid || b.ownerId === uid),
+  [bookings]);
+
+  const getBookingsForItem = useCallback((itemId: string) =>
+    bookings.filter(b => b.itemId === itemId && !['cancelled', 'rejected'].includes(b.status)),
+  [bookings]);
+
+  return { bookings, createBooking, updateBooking, getBookingsForUser, getBookingsForItem };
+}
+
 // ─── FAVORITES ───────────────────────────────────────────────────────────────
 
 export function useFavorites() {
-  const qc = useQueryClient();
   const { user } = useAuth();
+  const [favorites, setFavorites] = useState<Favorite[]>(USE_MOCK ? load<Favorite[]>('favorites', []) : []);
 
-  const { data: favorites = [] } = useQuery({
-    queryKey: ['favorites', user?.uid],
-    queryFn: () => user?.uid ? favoritesService.getFavorites(user.uid) : Promise.resolve([]),
-    enabled: !!user?.uid,
-  });
+  // Load from Firebase
+  useEffect(() => {
+    if (USE_MOCK || !user?.uid) return;
+    favoritesService.getFavorites(user.uid).then(setFavorites);
+  }, [user?.uid]);
 
-  const toggleMutation = useMutation({
-    mutationFn: (itemId: string) => {
-      if (!user?.uid) throw new Error('Not authenticated');
-      return favoritesService.toggleFavorite(user.uid, itemId);
-    },
-    onSuccess: () => qc.invalidateQueries({ queryKey: ['favorites'] }),
-  });
+  const toggle = useCallback((itemId: string) => {
+    const exists = favorites.some(f => f.itemId === itemId);
+    if (exists) {
+      setFavorites(prev => {
+        const next = prev.filter(f => f.itemId !== itemId);
+        if (USE_MOCK) save('favorites', next);
+        return next;
+      });
+    } else {
+      const nf: Favorite = { itemId, addedAt: new Date().toISOString() };
+      setFavorites(prev => {
+        const next = [...prev, nf];
+        if (USE_MOCK) save('favorites', next);
+        return next;
+      });
+    }
+    if (!USE_MOCK && user?.uid) favoritesService.toggleFavorite(user.uid, itemId);
+    return !exists;
+  }, [favorites, user?.uid]);
 
-  const toggleFavorite = useCallback(
-    (itemId: string) => toggleMutation.mutateAsync(itemId),
-    [toggleMutation],
-  );
+  // Sync check — returns boolean immediately
+  const isFav = useCallback((itemId: string) => favorites.some(f => f.itemId === itemId), [favorites]);
 
-  const isFavorite = useCallback(
-    (itemId: string) => favorites.some(f => f.itemId === itemId),
-    [favorites],
-  );
-
-  return { favorites, toggleFavorite, isFavorite };
+  return { favorites, toggle, isFav, toggleFavorite: toggle, isFavorite: isFav };
 }

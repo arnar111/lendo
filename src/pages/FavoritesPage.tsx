@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Navigate } from 'react-router-dom';
 import { Heart } from 'lucide-react';
 import ItemCard from '../components/ItemCard';
 import { useAuth, useItems, useFavorites, useGeo, distanceKm } from '../store/useStore';
@@ -28,7 +28,7 @@ export default function FavoritesPage() {
         ) : (
           <div className="grid grid-cols-2 gap-3">
             {favItems.map(item => (
-              <ItemCard key={item.id} item={item} distance={distanceKm(location.lat, location.lng, item.location.lat, item.location.lng)} />
+              <ItemCard key={item.id} item={item} distance={location ? distanceKm(location.lat, location.lng, item.location.lat, item.location.lng) : undefined} />
             ))}
           </div>
         )}
