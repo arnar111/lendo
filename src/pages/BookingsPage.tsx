@@ -70,7 +70,7 @@ export default function BookingsPage() {
   const { bookings, updateBooking, getBookingsForUser } = useBookings();
   const [tab, setTab] = useState<'renter' | 'owner'>('renter');
 
-  if (!user) { nav('/innskraning'); return null; }
+  if (!user) return <Navigate to="/innskraning" replace />;
 
   const myBookings = getBookingsForUser(user.uid);
   const filtered = myBookings

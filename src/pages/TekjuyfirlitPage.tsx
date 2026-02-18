@@ -185,7 +185,7 @@ export default function TekjuyfirlitPage() {
   }).reduce((s, e) => s + e.amount, 0);
   const goalProgress = monthEarnings / monthlyGoal;
 
-  if (!user) { nav('/innskraning'); return null; }
+  if (!user) return <Navigate to="/innskraning" replace />;
 
   return (
     <div className="min-h-screen bg-gray-50 pb-20">

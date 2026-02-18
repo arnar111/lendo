@@ -21,7 +21,7 @@ export default function CreateItemPage() {
   const [photoUrl, setPhotoUrl] = useState('');
   const [photos, setPhotos] = useState<string[]>([]);
 
-  if (!user) { nav('/innskraning'); return null; }
+  if (!user) return <Navigate to="/innskraning" replace />;
 
   const go = (e: React.FormEvent) => {
     e.preventDefault(); if (!title || !price) return;

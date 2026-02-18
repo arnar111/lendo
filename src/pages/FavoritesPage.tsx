@@ -10,7 +10,7 @@ export default function FavoritesPage() {
   const { favorites } = useFavorites();
   const { location } = useGeo();
 
-  if (!user) { nav('/innskraning'); return null; }
+  if (!user) return <Navigate to="/innskraning" replace />;
   const favItems = items.filter(i => favorites.some(f => f.itemId === i.id));
 
   return (

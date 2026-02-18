@@ -7,7 +7,7 @@ export default function MessagesPage() {
   const { user } = useAuth();
   const { conversations } = useConversations();
   const { getUser } = useUsers();
-  if (!user) { nav('/innskraning'); return null; }
+  if (!user) return <Navigate to="/innskraning" replace />;
 
   const my = conversations.filter(c => c.participantIds.includes(user.uid)).sort((a, b) => (b.lastMessageAt || b.createdAt).localeCompare(a.lastMessageAt || a.createdAt));
 

@@ -3,7 +3,8 @@ import { Star, LogOut, Settings, TrendingUp } from 'lucide-react';
 import { useAuth, useUsers, useItems, useReviews } from '../store/useStore';
 import ItemCard from '../components/ItemCard';
 import StarRating from '../components/StarRating';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { Navigate } from 'react-router-dom';
 
 export default function ProfilePage() {
   const { uid } = useParams<{ uid: string }>();
@@ -21,7 +22,7 @@ export default function ProfilePage() {
 
   const isOwn = !uid || uid === me?.uid;
   const pu = isOwn ? me : getUser(uid!);
-  if (!pu) { if (!me) { nav('/innskraning'); return null; } return <div className="min-h-screen flex items-center justify-center text-gray-500">Notandi fannst ekki</div>; }
+  if (!pu) { if (!me) return <Navigate to="/innskraning" replace />; return <div className="min-h-screen flex items-center justify-center text-gray-500">Notandi fannst ekki</div>; }
 
   const uItems = items.filter(i => i.ownerId === pu.uid && i.status === 'virkt');
   const oRevs = getReviewsFor(pu.uid, 'user_owner');
