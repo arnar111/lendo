@@ -31,7 +31,10 @@ export async function signInWithGoogle(): Promise<User> {
   if (existingDoc.exists()) {
     return existingDoc.data() as User;
   }
+  // New user — pull info from Google account
   const user = buildUser(cred.user, cred.user.displayName || 'Notandi');
+  user.photoURL = cred.user.photoURL || undefined;
+  user.needsOnboarding = true;
   await setDoc(doc(db, 'users', cred.user.uid), { ...user, createdAt: serverTimestamp(), lastActiveAt: serverTimestamp() });
   return user;
 }
@@ -66,5 +69,6 @@ function buildUser(fbUser: FirebaseUser, displayName: string): User {
     ratingAsRenterAvg: 0,
     ratingCountAsOwner: 0,
     ratingCountAsRenter: 0,
+    needsOnboarding: true,
   };
 }

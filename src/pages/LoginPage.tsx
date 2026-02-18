@@ -32,8 +32,8 @@ export default function LoginPage() {
   const handleGoogle = async () => {
     setErr(''); setLoading(true);
     try {
-      await loginWithGoogle();
-      nav('/');
+      const u = await loginWithGoogle();
+      nav(u && typeof u === 'object' && 'needsOnboarding' in u && u.needsOnboarding ? '/velkomin' : '/');
     } catch {
       setErr('Villa við Google innskráningu');
     } finally { setLoading(false); }

@@ -78,7 +78,7 @@ export function useAuth() {
 
   const register = useCallback(async (name: string, email: string, password: string) => {
     if (USE_MOCK) {
-      const u: User = { uid: 'user_' + Date.now(), displayName: name, email, createdAt: new Date().toISOString(), lastActiveAt: new Date().toISOString(), defaultRadiusKm: 5, ratingAsOwnerAvg: 0, ratingAsRenterAvg: 0, ratingCountAsOwner: 0, ratingCountAsRenter: 0 };
+      const u: User = { uid: 'user_' + Date.now(), displayName: name, email, photoURL: `https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(name)}`, createdAt: new Date().toISOString(), lastActiveAt: new Date().toISOString(), defaultRadiusKm: 5, ratingAsOwnerAvg: 0, ratingAsRenterAvg: 0, ratingCountAsOwner: 0, ratingCountAsRenter: 0, needsOnboarding: true };
       _currentUser = u; save('currentUser', u); _listeners.forEach(l => l(u)); return true;
     }
     await authService.signUp(email, password, name);
@@ -87,11 +87,11 @@ export function useAuth() {
 
   const loginWithGoogle = useCallback(async () => {
     if (USE_MOCK) {
-      const u: User = { uid: 'user_google', displayName: 'Google Notandi', email: 'google@gmail.com', createdAt: new Date().toISOString(), lastActiveAt: new Date().toISOString(), defaultRadiusKm: 5, ratingAsOwnerAvg: 0, ratingAsRenterAvg: 0, ratingCountAsOwner: 0, ratingCountAsRenter: 0 };
-      _currentUser = u; save('currentUser', u); _listeners.forEach(l => l(u)); return true;
+      const u: User = { uid: 'user_google', displayName: 'Google Notandi', email: 'google@gmail.com', photoURL: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Google', createdAt: new Date().toISOString(), lastActiveAt: new Date().toISOString(), defaultRadiusKm: 5, ratingAsOwnerAvg: 0, ratingAsRenterAvg: 0, ratingCountAsOwner: 0, ratingCountAsRenter: 0, needsOnboarding: true };
+      _currentUser = u; save('currentUser', u); _listeners.forEach(l => l(u)); return u;
     }
-    await authService.signInWithGoogle();
-    return true;
+    const u = await authService.signInWithGoogle();
+    return u;
   }, []);
 
   const logout = useCallback(async () => {

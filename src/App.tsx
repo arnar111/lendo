@@ -13,6 +13,7 @@ import RegisterPage from './pages/RegisterPage';
 import TekjuyfirlitPage from './pages/TekjuyfirlitPage';
 import BookingsPage from './pages/BookingsPage';
 import FavoritesPage from './pages/FavoritesPage';
+import OnboardingPage from './pages/OnboardingPage';
 
 function AppShell() {
   const { pathname } = useLocation();
@@ -32,6 +33,7 @@ function AppShell() {
           <Route path="/kort" element={<MapPage />} />
           <Route path="/innskraning" element={<LoginPage />} />
           <Route path="/nyskraning" element={<RegisterPage />} />
+          <Route path="/velkomin" element={<OnboardingPage />} />
           <Route path="/tekjur" element={<TekjuyfirlitPage />} />
           <Route path="/bokanir" element={<BookingsPage />} />
           <Route path="/uppahalds" element={<FavoritesPage />} />

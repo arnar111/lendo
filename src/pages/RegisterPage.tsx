@@ -18,7 +18,7 @@ export default function RegisterPage() {
     setErr(''); setLoading(true);
     try {
       await register(name, email, pw);
-      nav('/');
+      nav('/velkomin');
     } catch (err: any) {
       if (err?.code === 'auth/email-already-in-use') {
         setErr('Þetta netfang er þegar í notkun');
@@ -35,8 +35,8 @@ export default function RegisterPage() {
   const handleGoogle = async () => {
     setErr(''); setLoading(true);
     try {
-      await loginWithGoogle();
-      nav('/');
+      const u = await loginWithGoogle();
+      nav(u && typeof u === 'object' && 'needsOnboarding' in u && u.needsOnboarding ? '/velkomin' : '/');
     } catch {
       setErr('Villa við Google innskráningu');
     } finally { setLoading(false); }

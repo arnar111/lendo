@@ -14,6 +14,7 @@ export interface User {
   ratingCountAsOwner: number;
   ratingCountAsRenter: number;
   verified?: boolean;
+  needsOnboarding?: boolean;
 }
 
 export interface GeoPoint {
