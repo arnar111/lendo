@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, TrendingUp, Award, Flame, Target, ChevronRight, Star, Calendar, DollarSign } from 'lucide-react';
-import { useAuth, useItems, useReviews } from '../store/useStore';
+import { useAuth, useItems, useReviews, useBookings } from '../store/useStore';
 
 interface EarningEntry {
   date: string;
@@ -97,8 +97,25 @@ export default function TekjuyfirlitPage() {
 
   useEffect(() => { setTimeout(() => setLoaded(true), 100); }, []);
 
+  const { bookings } = useBookings();
   const myItems = items.filter(i => i.ownerId === user?.uid);
-  const earnings = useMemo(() => generateMockEarnings(myItems.map(i => i.id), myItems), [myItems]);
+
+  // Use real bookings data — fall back to mock generator if no bookings yet
+  const earnings = useMemo(() => {
+    const ownerBookings = bookings.filter(b => b.ownerId === user?.uid && !['cancelled', 'rejected'].includes(b.status));
+    if (ownerBookings.length > 0) {
+      return ownerBookings.map(b => ({
+        date: b.startDate,
+        amount: b.totalISK,
+        itemId: b.itemId,
+        itemTitle: b.itemTitle,
+        renterName: b.renterName,
+        days: b.days,
+      })).sort((a, b) => b.date.localeCompare(a.date));
+    }
+    // Fallback to mock data for demo
+    return generateMockEarnings(myItems.map(i => i.id), myItems);
+  }, [bookings, user?.uid, myItems]);
 
   const periodDays = period === '7d' ? 7 : period === '30d' ? 30 : 90;
   const cutoff = new Date();
