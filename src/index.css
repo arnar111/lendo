@@ -52,3 +52,55 @@
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
+
+/* ── Desktop / iPad responsive layout ─────────────────────────── */
+
+/* Desktop: center content, max-width, sidebar nav */
+@media (min-width: 1024px) {
+  /* Hide mobile bottom nav on desktop */
+  nav.fixed.bottom-0 {
+    display: none !important;
+  }
+
+  /* Main content gets breathing room */
+  body {
+    background-color: #f3f4f6;
+  }
+}
+
+/* iPad landscape (1024px+): wider cards */
+@media (min-width: 768px) {
+  .grid-cols-2 {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  .grid-cols-2 {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  }
+}
+
+/* Desktop wrapper for app shell */
+@media (min-width: 1024px) {
+  #root {
+    display: flex;
+    justify-content: center;
+  }
+
+  #root > div {
+    max-width: 100%;
+    width: 100%;
+  }
+}
+
+/* Wider max-width on desktop */
+@media (min-width: 1024px) {
+  .max-w-lg {
+    max-width: 56rem !important;
+  }
+
+  .max-w-2xl {
+    max-width: 56rem !important;
+  }
+}
