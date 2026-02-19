@@ -225,20 +225,22 @@ export default function CreateItemPage() {
 
               {/* Optional prices */}
               <div className="grid grid-cols-2 gap-3">
-                <div className="bg-white border border-gray-200 rounded-2xl p-3">
-                  <label className="block text-xs font-medium text-gray-500 mb-1">Helgarverð</label>
+                <div className="bg-white border-2 border-gray-200 rounded-2xl p-4">
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">Helgarverð</label>
                   <div className="relative">
-                    <input type="number" value={weekendPrice} onChange={e => setWeekendPrice(e.target.value)} placeholder="—"
-                      className="w-full px-3 py-2 border rounded-xl text-sm text-center focus:ring-2 focus:ring-brand-300 focus:outline-none" />
-                    <span className="absolute right-2 top-1/2 -translate-y-1/2 text-xs text-gray-400">kr</span>
+                    <input type="number" value={weekendPrice} onChange={e => setWeekendPrice(e.target.value)} placeholder="0"
+                      style={{ fontSize: '1.25rem', padding: '0.75rem 2.5rem 0.75rem 1rem', fontWeight: 600 }}
+                      className="w-full border-2 border-gray-200 rounded-xl text-center focus:ring-2 focus:ring-brand-300 focus:border-brand-400 focus:outline-none" />
+                    <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 font-medium">kr</span>
                   </div>
                 </div>
-                <div className="bg-white border border-gray-200 rounded-2xl p-3">
-                  <label className="block text-xs font-medium text-gray-500 mb-1">Vikuverð</label>
+                <div className="bg-white border-2 border-gray-200 rounded-2xl p-4">
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">Vikuverð</label>
                   <div className="relative">
-                    <input type="number" value={weekPrice} onChange={e => setWeekPrice(e.target.value)} placeholder="—"
-                      className="w-full px-3 py-2 border rounded-xl text-sm text-center focus:ring-2 focus:ring-brand-300 focus:outline-none" />
-                    <span className="absolute right-2 top-1/2 -translate-y-1/2 text-xs text-gray-400">kr</span>
+                    <input type="number" value={weekPrice} onChange={e => setWeekPrice(e.target.value)} placeholder="0"
+                      style={{ fontSize: '1.25rem', padding: '0.75rem 2.5rem 0.75rem 1rem', fontWeight: 600 }}
+                      className="w-full border-2 border-gray-200 rounded-xl text-center focus:ring-2 focus:ring-brand-300 focus:border-brand-400 focus:outline-none" />
+                    <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 font-medium">kr</span>
                   </div>
                 </div>
               </div>

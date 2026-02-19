@@ -17,7 +17,7 @@ import * as favoritesService from '../services/favorites';
 import { MOCK_USERS, MOCK_ITEMS, MOCK_CONVERSATIONS, MOCK_MESSAGES, MOCK_REVIEWS, MOCK_BOOKINGS } from '../data/mock';
 
 // Set to true to use mock data instead of Firebase
-const USE_MOCK = true;
+const USE_MOCK = false;
 
 // ─── HELPERS ─────────────────────────────────────────────────────────────────
 
