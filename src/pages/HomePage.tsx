@@ -39,7 +39,7 @@ export default function HomePage() {
   }, [q, active, fuse, cat, pMin, pMax, radius, sort, location]);
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-20">
+    <div className="min-h-screen bg-gray-50 pb-20 overflow-x-hidden">
       <header className="bg-white border-b sticky top-0 z-40">
         <div className="max-w-lg mx-auto px-4 py-3">
           <div className="flex items-center justify-between mb-3">

@@ -81,7 +81,7 @@ function AppShell() {
 export default function App() {
   return (
     <BrowserRouter>
-      <div className="flex min-h-screen">
+      <div className="flex min-h-screen max-w-full overflow-x-hidden">
         <DesktopSidebar />
         <AppShell />
       </div>
