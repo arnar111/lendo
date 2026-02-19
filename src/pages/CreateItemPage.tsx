@@ -277,7 +277,7 @@ export default function CreateItemPage() {
       </div>
 
       {/* Bottom action bar */}
-      <div className="fixed bottom-0 left-0 right-0 bg-white border-t px-4 py-3 z-40 safe-area-bottom lg:relative lg:border-0 lg:bg-transparent lg:pt-0">
+      <div className="fixed bottom-0 left-0 right-0 bg-white border-t px-4 py-4 z-50 lg:relative lg:border-0 lg:bg-transparent lg:pt-0" style={{ paddingBottom: 'max(1rem, env(safe-area-inset-bottom))' }}>
         <div className="max-w-2xl mx-auto flex gap-3">
           {step > 0 && (
             <button onClick={() => setStep(step - 1)} className="px-6 py-3 border-2 border-gray-200 rounded-xl text-sm font-medium text-gray-600 hover:bg-gray-50">

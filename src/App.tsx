@@ -51,7 +51,7 @@ function DesktopSidebar() {
 
 function AppShell() {
   const { pathname } = useLocation();
-  const hideNav = pathname.startsWith('/innskraning') || pathname.startsWith('/nyskraning') || pathname.startsWith('/skilabod/') || pathname === '/velkomin';
+  const hideNav = pathname.startsWith('/innskraning') || pathname.startsWith('/nyskraning') || pathname.startsWith('/skilabod/') || pathname === '/velkomin' || pathname === '/skra-hlut';
   return (
     <>
       <div className="page-enter flex-1">
