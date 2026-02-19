@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, useLocation, Link } from 'react-router-dom';
 import BottomNav from './components/BottomNav';
+import { Home, Search, PlusCircle, MessageCircle, Calendar, Heart, TrendingUp, User, type LucideIcon } from 'lucide-react';
 import HomePage from './pages/HomePage';
 import SearchPage from './pages/SearchPage';
 import ItemDetailPage from './pages/ItemDetailPage';
@@ -17,15 +18,15 @@ import OnboardingPage from './pages/OnboardingPage';
 
 function DesktopSidebar() {
   const { pathname } = useLocation();
-  const NAV = [
-    { path: '/', icon: '🏠', label: 'Heim' },
-    { path: '/leit', icon: '🔍', label: 'Leita' },
-    { path: '/skra-hlut', icon: '➕', label: 'Skrá hlut' },
-    { path: '/skilabod', icon: '💬', label: 'Skilaboð' },
-    { path: '/bokanir', icon: '📅', label: 'Bókanir' },
-    { path: '/uppahalds', icon: '❤️', label: 'Uppáhald' },
-    { path: '/tekjur', icon: '💰', label: 'Tekjur' },
-    { path: '/profill', icon: '👤', label: 'Prófíll' },
+  const NAV: { path: string; icon: LucideIcon; label: string }[] = [
+    { path: '/', icon: Home, label: 'Heim' },
+    { path: '/leit', icon: Search, label: 'Leita' },
+    { path: '/skra-hlut', icon: PlusCircle, label: 'Skrá hlut' },
+    { path: '/skilabod', icon: MessageCircle, label: 'Skilaboð' },
+    { path: '/bokanir', icon: Calendar, label: 'Bókanir' },
+    { path: '/uppahalds', icon: Heart, label: 'Uppáhald' },
+    { path: '/tekjur', icon: TrendingUp, label: 'Tekjur' },
+    { path: '/profill', icon: User, label: 'Prófíll' },
   ];
   return (
     <aside className="hidden lg:flex flex-col w-56 bg-white border-r min-h-screen sticky top-0 shrink-0">
@@ -34,11 +35,11 @@ function DesktopSidebar() {
         <p className="text-xs text-gray-400 mt-0.5">Leigumarkaður Íslands</p>
       </div>
       <nav className="flex-1 px-3 space-y-1">
-        {NAV.map(({ path, icon, label }) => {
+        {NAV.map(({ path, icon: Icon, label }) => {
           const active = path === '/' ? pathname === '/' : pathname.startsWith(path);
           return (
             <Link key={path} to={path} className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors ${active ? 'bg-teal-50 text-teal-700' : 'text-gray-600 hover:bg-gray-50'}`}>
-              <span className="text-lg">{icon}</span>
+              <Icon size={20} strokeWidth={active ? 2.2 : 1.8} />
               <span>{label}</span>
             </Link>
           );
