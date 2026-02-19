@@ -86,8 +86,8 @@ export default function HomePage() {
         </div>
       )}
 
-      <div className="max-w-lg mx-auto px-4 py-3 overflow-x-auto scrollbar-hide">
-        <div className="flex gap-2 min-w-max">
+      <div style={{ maxWidth: '100vw', overflowX: 'auto', WebkitOverflowScrolling: 'touch' }} className="scrollbar-hide">
+        <div className="flex gap-2 px-4 py-3" style={{ width: 'max-content' }}>
           {CATEGORIES.map(c => <button key={c.id} onClick={() => setCat(cat === c.id ? null : c.id)}
             className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm whitespace-nowrap ${cat === c.id ? 'bg-brand-600 text-white' : 'bg-white border border-gray-200 text-gray-700'}`}>
             <span>{c.icon}</span><span>{c.label}</span>
