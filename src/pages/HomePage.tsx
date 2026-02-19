@@ -106,7 +106,7 @@ export default function HomePage() {
         </div>
         <p className="text-xs text-gray-400 mb-3">{filtered.length} hlutir innan {radius}km</p>
         {filtered.length === 0 ? (
-          <div className="text-center py-16"><div className="text-5xl mb-4">🔍</div><h3 className="font-semibold mb-1">Ekkert fannst</h3><p className="text-sm text-gray-500">Breyttu leit eða stækkaðu radíus</p></div>
+          <div className="flex flex-col items-center justify-center py-16 w-full"><div className="text-5xl mb-4">🔍</div><h3 className="font-semibold mb-1">Ekkert fannst</h3><p className="text-sm text-gray-500">Breyttu leit eða stækkaðu radíus</p></div>
         ) : (
           <div className="grid grid-cols-2 gap-3">{filtered.map(item => <ItemCard key={item.id} item={item} distance={distanceKm(location.lat, location.lng, item.location.lat, item.location.lng)} />)}</div>
         )}
