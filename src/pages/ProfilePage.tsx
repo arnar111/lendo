@@ -53,7 +53,7 @@ export default function ProfilePage() {
         </div>
 
         {isOwn && (
-          <button onClick={() => nav('/tekjur')} className="w-full bg-gradient-to-r from-brand-600 to-emerald-600 text-white rounded-2xl p-4 mb-6 flex items-center gap-3 hover:from-brand-700 hover:to-emerald-700 transition-all shadow-sm">
+          <button onClick={() => nav('/tekjur')} className="w-full bg-gradient-to-r from-brand-600 to-brand-400 text-white rounded-2xl p-4 mb-6 flex items-center gap-3 hover:from-brand-700 hover:to-emerald-700 transition-all shadow-sm">
             <div className="w-12 h-12 bg-white/20 backdrop-blur rounded-xl flex items-center justify-center"><TrendingUp size={24} /></div>
             <div className="text-left flex-1"><p className="font-bold">Tekjuyfirlit</p><p className="text-sm text-brand-100">Sjáðu tekjur þínar og tölfræði</p></div>
             <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
