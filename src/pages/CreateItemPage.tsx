@@ -93,7 +93,7 @@ export default function CreateItemPage() {
         </div>
         {/* Progress bar */}
         <div className="h-1 bg-gray-100">
-          <div className="h-full bg-teal-500 transition-all duration-500" style={{ width: `${((step + 1) / totalSteps) * 100}%` }} />
+          <div className="h-full bg-brand-500 transition-all duration-500" style={{ width: `${((step + 1) / totalSteps) * 100}%` }} />
         </div>
       </header>
 
@@ -104,7 +104,7 @@ export default function CreateItemPage() {
         {step === 0 && (
           <div className="animate-fade-in-up">
             <div className="text-center mb-6">
-              <Camera size={32} className="mx-auto text-teal-500 mb-2" />
+              <Camera size={32} className="mx-auto text-brand-500 mb-2" />
               <h2 className="text-xl font-bold">Bættu við myndum</h2>
               <p className="text-sm text-gray-500 mt-1">Góðar myndir selja betur — bættu við a.m.k. einni</p>
             </div>
@@ -117,14 +117,14 @@ export default function CreateItemPage() {
                   <button onClick={() => removePhoto(i)} className="absolute top-2 right-2 w-7 h-7 bg-black/50 text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                     <X size={14} />
                   </button>
-                  {i === 0 && <span className="absolute bottom-2 left-2 bg-teal-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">Forsíða</span>}
+                  {i === 0 && <span className="absolute bottom-2 left-2 bg-brand-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">Forsíða</span>}
                 </div>
               ))}
 
               {/* Add photo button */}
-              <button onClick={() => fileRef.current?.click()} className="aspect-square rounded-2xl border-2 border-dashed border-teal-300 flex flex-col items-center justify-center gap-2 hover:bg-teal-50 hover:border-teal-400 transition-colors">
-                <ImagePlus size={24} className="text-teal-500" />
-                <span className="text-xs text-teal-600 font-medium">Bæta við</span>
+              <button onClick={() => fileRef.current?.click()} className="aspect-square rounded-2xl border-2 border-dashed border-brand-300 flex flex-col items-center justify-center gap-2 hover:bg-brand-50 hover:border-brand-400 transition-colors">
+                <ImagePlus size={24} className="text-brand-500" />
+                <span className="text-xs text-brand-600 font-medium">Bæta við</span>
               </button>
             </div>
 
@@ -136,7 +136,7 @@ export default function CreateItemPage() {
               {showUrlInput && (
                 <div className="flex gap-2 mt-2 max-w-sm mx-auto">
                   <input type="text" value={photoUrl} onChange={e => setPhotoUrl(e.target.value)} placeholder="https://..." className="flex-1 px-3 py-2 border rounded-xl text-sm" />
-                  <button type="button" onClick={() => { if (photoUrl.trim()) { setPhotos(p => [...p, photoUrl.trim()]); setPhotoUrl(''); } }} className="px-3 py-2 bg-teal-100 text-teal-700 rounded-xl text-sm font-medium">Bæta við</button>
+                  <button type="button" onClick={() => { if (photoUrl.trim()) { setPhotos(p => [...p, photoUrl.trim()]); setPhotoUrl(''); } }} className="px-3 py-2 bg-brand-100 text-brand-700 rounded-xl text-sm font-medium">Bæta við</button>
                 </div>
               )}
             </div>
@@ -147,14 +147,14 @@ export default function CreateItemPage() {
         {step === 1 && (
           <div className="animate-fade-in-up space-y-5">
             <div className="text-center mb-4">
-              <Tag size={32} className="mx-auto text-teal-500 mb-2" />
+              <Tag size={32} className="mx-auto text-brand-500 mb-2" />
               <h2 className="text-xl font-bold">Lýstu hlutnum</h2>
             </div>
 
             <div>
               <label className="block text-sm font-semibold text-gray-700 mb-2">Hvað ertu að leigja? *</label>
               <input type="text" value={title} onChange={e => setTitle(e.target.value)} placeholder="t.d. Bosch borvél, Hilleberg tjald..." autoFocus
-                className="w-full px-4 py-3.5 border-2 border-gray-200 rounded-2xl text-base focus:ring-2 focus:ring-teal-300 focus:border-teal-400 focus:outline-none" />
+                className="w-full px-4 py-3.5 border-2 border-gray-200 rounded-2xl text-base focus:ring-2 focus:ring-brand-300 focus:border-brand-400 focus:outline-none" />
             </div>
 
             <div>
@@ -162,7 +162,7 @@ export default function CreateItemPage() {
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                 {CATEGORIES.map(c => (
                   <button key={c.id} type="button" onClick={() => setCatId(c.id)}
-                    className={`flex items-center gap-2 px-4 py-3 rounded-xl text-sm font-medium transition-all ${catId === c.id ? 'bg-teal-600 text-white shadow-md scale-[1.02]' : 'bg-white border-2 border-gray-200 hover:border-teal-300'}`}>
+                    className={`flex items-center gap-2 px-4 py-3 rounded-xl text-sm font-medium transition-all ${catId === c.id ? 'bg-brand-600 text-white shadow-md scale-[1.02]' : 'bg-white border-2 border-gray-200 hover:border-brand-300'}`}>
                     <span className="text-lg">{c.icon}</span>
                     <span>{c.label}</span>
                   </button>
@@ -173,7 +173,7 @@ export default function CreateItemPage() {
             <div>
               <label className="block text-sm font-semibold text-gray-700 mb-2">Lýsing</label>
               <textarea value={desc} onChange={e => setDesc(e.target.value)} placeholder="Segðu meira — hvað er innifalið, sérstakar athugasemdir..."
-                className="w-full px-4 py-3 border-2 border-gray-200 rounded-2xl text-sm resize-none h-28 focus:ring-2 focus:ring-teal-300 focus:border-teal-400 focus:outline-none" />
+                className="w-full px-4 py-3 border-2 border-gray-200 rounded-2xl text-sm resize-none h-28 focus:ring-2 focus:ring-brand-300 focus:border-brand-400 focus:outline-none" />
             </div>
           </div>
         )}
@@ -182,7 +182,7 @@ export default function CreateItemPage() {
         {step === 2 && (
           <div className="animate-fade-in-up">
             <div className="text-center mb-6">
-              <Shield size={32} className="mx-auto text-teal-500 mb-2" />
+              <Shield size={32} className="mx-auto text-brand-500 mb-2" />
               <h2 className="text-xl font-bold">Ástand</h2>
               <p className="text-sm text-gray-500 mt-1">Hvernig lítur hluturinn út?</p>
             </div>
@@ -190,13 +190,13 @@ export default function CreateItemPage() {
             <div className="space-y-3 max-w-sm mx-auto">
               {CONDS.map(c => (
                 <button key={c.v} type="button" onClick={() => setCond(c.v)}
-                  className={`w-full flex items-center gap-4 px-5 py-4 rounded-2xl text-left transition-all ${cond === c.v ? 'bg-teal-50 border-2 border-teal-500 shadow-sm' : 'bg-white border-2 border-gray-200 hover:border-teal-300'}`}>
+                  className={`w-full flex items-center gap-4 px-5 py-4 rounded-2xl text-left transition-all ${cond === c.v ? 'bg-brand-50 border-2 border-brand-500 shadow-sm' : 'bg-white border-2 border-gray-200 hover:border-brand-300'}`}>
                   <span className="text-2xl">{c.emoji}</span>
                   <div>
-                    <p className={`font-semibold ${cond === c.v ? 'text-teal-700' : 'text-gray-900'}`}>{c.l}</p>
+                    <p className={`font-semibold ${cond === c.v ? 'text-brand-700' : 'text-gray-900'}`}>{c.l}</p>
                     <p className="text-xs text-gray-500">{c.desc}</p>
                   </div>
-                  {cond === c.v && <div className="ml-auto w-6 h-6 bg-teal-500 rounded-full flex items-center justify-center"><ChevronRight size={14} className="text-white" /></div>}
+                  {cond === c.v && <div className="ml-auto w-6 h-6 bg-brand-500 rounded-full flex items-center justify-center"><ChevronRight size={14} className="text-white" /></div>}
                 </button>
               ))}
             </div>
@@ -207,18 +207,18 @@ export default function CreateItemPage() {
         {step === 3 && (
           <div className="animate-fade-in-up">
             <div className="text-center mb-6">
-              <Sparkles size={32} className="mx-auto text-teal-500 mb-2" />
+              <Sparkles size={32} className="mx-auto text-brand-500 mb-2" />
               <h2 className="text-xl font-bold">Verðlagning</h2>
               <p className="text-sm text-gray-500 mt-1">Settu verð á hlutinn þinn</p>
             </div>
 
             <div className="space-y-4 max-w-sm mx-auto">
               {/* Primary: Day price */}
-              <div className="bg-white border-2 border-teal-200 rounded-2xl p-4">
-                <label className="block text-sm font-semibold text-teal-700 mb-2">Dagverð *</label>
+              <div className="bg-white border-2 border-brand-200 rounded-2xl p-4">
+                <label className="block text-sm font-semibold text-brand-700 mb-2">Dagverð *</label>
                 <div className="relative">
                   <input type="number" value={price} onChange={e => setPrice(e.target.value)} placeholder="0" autoFocus
-                    className="w-full px-4 py-3.5 pr-12 border-2 border-gray-200 rounded-xl text-2xl font-bold text-center focus:ring-2 focus:ring-teal-300 focus:border-teal-400 focus:outline-none" />
+                    className="w-full px-4 py-3.5 pr-12 border-2 border-gray-200 rounded-xl text-2xl font-bold text-center focus:ring-2 focus:ring-brand-300 focus:border-brand-400 focus:outline-none" />
                   <span className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 font-medium">kr</span>
                 </div>
               </div>
@@ -229,7 +229,7 @@ export default function CreateItemPage() {
                   <label className="block text-xs font-medium text-gray-500 mb-1">Helgarverð</label>
                   <div className="relative">
                     <input type="number" value={weekendPrice} onChange={e => setWeekendPrice(e.target.value)} placeholder="—"
-                      className="w-full px-3 py-2 border rounded-xl text-sm text-center focus:ring-2 focus:ring-teal-300 focus:outline-none" />
+                      className="w-full px-3 py-2 border rounded-xl text-sm text-center focus:ring-2 focus:ring-brand-300 focus:outline-none" />
                     <span className="absolute right-2 top-1/2 -translate-y-1/2 text-xs text-gray-400">kr</span>
                   </div>
                 </div>
@@ -237,7 +237,7 @@ export default function CreateItemPage() {
                   <label className="block text-xs font-medium text-gray-500 mb-1">Vikuverð</label>
                   <div className="relative">
                     <input type="number" value={weekPrice} onChange={e => setWeekPrice(e.target.value)} placeholder="—"
-                      className="w-full px-3 py-2 border rounded-xl text-sm text-center focus:ring-2 focus:ring-teal-300 focus:outline-none" />
+                      className="w-full px-3 py-2 border rounded-xl text-sm text-center focus:ring-2 focus:ring-brand-300 focus:outline-none" />
                     <span className="absolute right-2 top-1/2 -translate-y-1/2 text-xs text-gray-400">kr</span>
                   </div>
                 </div>
@@ -247,20 +247,20 @@ export default function CreateItemPage() {
                 <label className="block text-xs font-medium text-gray-500 mb-1">Trygging (endurgreidd)</label>
                 <div className="relative">
                   <input type="number" value={deposit} onChange={e => setDeposit(e.target.value)} placeholder="Valkvætt"
-                    className="w-full px-3 py-2 border rounded-xl text-sm text-center focus:ring-2 focus:ring-teal-300 focus:outline-none" />
+                    className="w-full px-3 py-2 border rounded-xl text-sm text-center focus:ring-2 focus:ring-brand-300 focus:outline-none" />
                   <span className="absolute right-2 top-1/2 -translate-y-1/2 text-xs text-gray-400">kr</span>
                 </div>
               </div>
 
               {/* Preview card */}
               {Number(price) > 0 && (
-                <div className="bg-teal-50 rounded-2xl p-4 mt-2">
-                  <p className="text-xs text-teal-600 font-medium mb-2">Sýnishorn:</p>
+                <div className="bg-brand-50 rounded-2xl p-4 mt-2">
+                  <p className="text-xs text-brand-600 font-medium mb-2">Sýnishorn:</p>
                   <div className="flex items-center gap-3">
                     {photos[0] && <img src={photos[0]} className="w-12 h-12 rounded-xl object-cover" />}
                     <div>
                       <p className="font-semibold text-sm">{title || 'Hlutur'}</p>
-                      <p className="text-teal-700 font-bold">{Number(price).toLocaleString('is-IS')} kr/dag</p>
+                      <p className="text-brand-700 font-bold">{Number(price).toLocaleString('is-IS')} kr/dag</p>
                     </div>
                   </div>
                 </div>
@@ -280,12 +280,12 @@ export default function CreateItemPage() {
           )}
           {step < totalSteps - 1 ? (
             <button onClick={() => setStep(step + 1)} disabled={!canProceed()}
-              className="flex-1 py-3 bg-teal-600 text-white rounded-xl font-semibold text-sm disabled:opacity-40 hover:bg-teal-700 transition-colors flex items-center justify-center gap-2">
+              className="flex-1 py-3 bg-brand-600 text-white rounded-xl font-semibold text-sm disabled:opacity-40 hover:bg-brand-700 transition-colors flex items-center justify-center gap-2">
               Áfram <ChevronRight size={16} />
             </button>
           ) : (
             <button onClick={submit} disabled={!canProceed() || submitting}
-              className="flex-1 py-3 bg-teal-600 text-white rounded-xl font-semibold text-sm disabled:opacity-40 hover:bg-teal-700 transition-colors flex items-center justify-center gap-2">
+              className="flex-1 py-3 bg-brand-600 text-white rounded-xl font-semibold text-sm disabled:opacity-40 hover:bg-brand-700 transition-colors flex items-center justify-center gap-2">
               {submitting ? (
                 <><span className="animate-spin">⏳</span> Birti...</>
               ) : (

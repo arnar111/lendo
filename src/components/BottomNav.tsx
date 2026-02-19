@@ -31,7 +31,7 @@ export default function BottomNav() {
         {NAV.map(({ path, icon: Icon, label, badge }) => {
           const active = path === '/' ? pathname === '/' : pathname.startsWith(path);
           return (
-            <Link key={path} to={path} className={`relative flex flex-col items-center gap-0.5 px-3 py-1 text-xs transition-colors ${active ? 'text-teal-600' : 'text-gray-500'}`}>
+            <Link key={path} to={path} className={`relative flex flex-col items-center gap-0.5 px-3 py-1 text-xs transition-colors ${active ? 'text-brand-600' : 'text-gray-500'}`}>
               <div className="relative">
                 <Icon size={22} strokeWidth={active ? 2.5 : 1.8} />
                 {badge > 0 && (

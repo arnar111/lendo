@@ -48,11 +48,11 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-teal-600 to-teal-800 flex items-center justify-center px-4">
+    <div className="min-h-screen bg-gradient-to-br from-brand-600 to-brand-800 flex items-center justify-center px-4">
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-white mb-2">Leigja</h1>
-          <p className="text-teal-200">Búðu til aðgang</p>
+          <h1 className="text-4xl font-bold text-white mb-2">Lendó</h1>
+          <p className="text-brand-200">Búðu til aðgang</p>
         </div>
         <div className="bg-white rounded-2xl shadow-xl p-6 space-y-4">
           {err && <p className="text-red-500 text-sm bg-red-50 rounded-lg p-2">{err}</p>}
@@ -73,10 +73,10 @@ export default function RegisterPage() {
           </div>
 
           <form onSubmit={go} className="space-y-3">
-            <input type="text" value={name} onChange={e => setName(e.target.value)} placeholder="Fullt nafn" className="w-full px-4 py-2.5 rounded-xl bg-gray-100 text-sm border-0 focus:ring-2 focus:ring-teal-500" />
-            <input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="Netfang" className="w-full px-4 py-2.5 rounded-xl bg-gray-100 text-sm border-0 focus:ring-2 focus:ring-teal-500" />
-            <input type="password" value={pw} onChange={e => setPw(e.target.value)} placeholder="Lykilorð (a.m.k. 6 stafir)" className="w-full px-4 py-2.5 rounded-xl bg-gray-100 text-sm border-0 focus:ring-2 focus:ring-teal-500" />
-            <button type="submit" disabled={loading} className="w-full py-3 bg-teal-600 text-white rounded-xl font-semibold text-sm hover:bg-teal-700 disabled:opacity-50">
+            <input type="text" value={name} onChange={e => setName(e.target.value)} placeholder="Fullt nafn" className="w-full px-4 py-2.5 rounded-xl bg-gray-100 text-sm border-0 focus:ring-2 focus:ring-brand-500" />
+            <input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="Netfang" className="w-full px-4 py-2.5 rounded-xl bg-gray-100 text-sm border-0 focus:ring-2 focus:ring-brand-500" />
+            <input type="password" value={pw} onChange={e => setPw(e.target.value)} placeholder="Lykilorð (a.m.k. 6 stafir)" className="w-full px-4 py-2.5 rounded-xl bg-gray-100 text-sm border-0 focus:ring-2 focus:ring-brand-500" />
+            <button type="submit" disabled={loading} className="w-full py-3 bg-brand-600 text-white rounded-xl font-semibold text-sm hover:bg-brand-700 disabled:opacity-50">
               {loading ? 'Augnablik...' : 'Nýskrá'}
             </button>
           </form>
@@ -84,7 +84,7 @@ export default function RegisterPage() {
           <div className="text-center pt-2">
             <p className="text-sm text-gray-500">
               Þegar með aðgang?{' '}
-              <Link to="/innskraning" className="text-teal-600 font-semibold hover:underline">Skrá inn</Link>
+              <Link to="/innskraning" className="text-brand-600 font-semibold hover:underline">Skrá inn</Link>
             </p>
           </div>
         </div>

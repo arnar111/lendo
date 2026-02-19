@@ -62,7 +62,7 @@ function MiniBarChart({ data, maxHeight = 80 }: { data: { label: string; value: 
         return (
           <div key={i} className="flex flex-col items-center gap-1 flex-1">
             <div
-              className={`w-full rounded-t-md transition-all duration-700 ${isToday ? 'bg-teal-500' : 'bg-teal-300'}`}
+              className={`w-full rounded-t-md transition-all duration-700 ${isToday ? 'bg-brand-500' : 'bg-brand-300'}`}
               style={{ height: `${h}px`, animationDelay: `${i * 80}ms` }}
             />
             <span className="text-[9px] text-gray-400">{d.label}</span>
@@ -190,7 +190,7 @@ export default function TekjuyfirlitPage() {
   return (
     <div className="min-h-screen bg-gray-50 pb-20">
       {/* Header */}
-      <header className="bg-gradient-to-br from-teal-600 via-teal-700 to-emerald-800 text-white">
+      <header className="bg-gradient-to-br from-brand-600 via-brand-700 to-brand-800 text-white">
         <div className="max-w-lg mx-auto px-4 pt-4 pb-6">
           <div className="flex items-center gap-3 mb-4">
             <button onClick={() => nav(-1)} className="w-10 h-10 bg-white/10 backdrop-blur rounded-full flex items-center justify-center"><ArrowLeft size={20} /></button>
@@ -199,7 +199,7 @@ export default function TekjuyfirlitPage() {
 
           {/* Big number */}
           <div className={`transition-all duration-700 ${loaded ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`}>
-            <p className="text-teal-200 text-sm mb-1">Heildartekjur ({period === '7d' ? '7 dagar' : period === '30d' ? '30 dagar' : '90 dagar'})</p>
+            <p className="text-brand-200 text-sm mb-1">Heildartekjur ({period === '7d' ? '7 dagar' : period === '30d' ? '30 dagar' : '90 dagar'})</p>
             <p className="text-4xl font-black tracking-tight">
               <AnimatedCounter target={totalRevenue} suffix=" kr" />
             </p>
@@ -208,7 +208,7 @@ export default function TekjuyfirlitPage() {
                 <TrendingUp size={14} className={growthPct < 0 ? 'rotate-180' : ''} />
                 {growthPct >= 0 ? '+' : ''}{growthPct}%
               </span>
-              <span className="text-teal-200 text-sm">miðað við síðasta tímabil</span>
+              <span className="text-brand-200 text-sm">miðað við síðasta tímabil</span>
             </div>
           </div>
 
@@ -216,7 +216,7 @@ export default function TekjuyfirlitPage() {
           <div className="flex gap-2 mt-4">
             {(['7d', '30d', '90d'] as const).map(p => (
               <button key={p} onClick={() => setPeriod(p)}
-                className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${period === p ? 'bg-white text-teal-700' : 'bg-white/10 text-white/80 hover:bg-white/20'}`}>
+                className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${period === p ? 'bg-white text-brand-700' : 'bg-white/10 text-white/80 hover:bg-white/20'}`}>
                 {p === '7d' ? '7 dagar' : p === '30d' ? '30 dagar' : '90 dagar'}
               </button>
             ))}
@@ -228,7 +228,7 @@ export default function TekjuyfirlitPage() {
         {/* Quick stats */}
         <div className={`grid grid-cols-3 gap-3 transition-all duration-700 delay-200 ${loaded ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`}>
           <div className="bg-white rounded-2xl shadow-sm border p-3 text-center">
-            <div className="w-10 h-10 bg-teal-50 rounded-xl flex items-center justify-center mx-auto mb-2"><Calendar size={20} className="text-teal-600" /></div>
+            <div className="w-10 h-10 bg-brand-50 rounded-xl flex items-center justify-center mx-auto mb-2"><Calendar size={20} className="text-brand-600" /></div>
             <p className="text-xl font-bold text-gray-900">{totalRentals}</p>
             <p className="text-xs text-gray-500">Leigur</p>
           </div>
@@ -256,14 +256,14 @@ export default function TekjuyfirlitPage() {
             <div className="relative">
               <ProgressRing progress={goalProgress} size={80} strokeWidth={6} />
               <div className="absolute inset-0 flex items-center justify-center">
-                <span className="text-sm font-bold text-teal-700">{Math.min(Math.round(goalProgress * 100), 100)}%</span>
+                <span className="text-sm font-bold text-brand-700">{Math.min(Math.round(goalProgress * 100), 100)}%</span>
               </div>
             </div>
             <div className="flex-1">
-              <div className="flex items-center gap-2 mb-1"><Target size={16} className="text-teal-600" /><h3 className="font-semibold text-gray-900">Mánaðarmarkmið</h3></div>
-              <p className="text-sm text-gray-600"><span className="font-bold text-teal-700">{monthEarnings.toLocaleString('is-IS')} kr</span> af {monthlyGoal.toLocaleString('is-IS')} kr</p>
+              <div className="flex items-center gap-2 mb-1"><Target size={16} className="text-brand-600" /><h3 className="font-semibold text-gray-900">Mánaðarmarkmið</h3></div>
+              <p className="text-sm text-gray-600"><span className="font-bold text-brand-700">{monthEarnings.toLocaleString('is-IS')} kr</span> af {monthlyGoal.toLocaleString('is-IS')} kr</p>
               <div className="w-full bg-gray-100 rounded-full h-2 mt-2">
-                <div className="bg-gradient-to-r from-teal-400 to-emerald-500 h-2 rounded-full transition-all duration-1000" style={{ width: `${Math.min(goalProgress * 100, 100)}%` }} />
+                <div className="bg-gradient-to-r from-brand-400 to-brand-500 h-2 rounded-full transition-all duration-1000" style={{ width: `${Math.min(goalProgress * 100, 100)}%` }} />
               </div>
             </div>
           </div>
@@ -283,8 +283,8 @@ export default function TekjuyfirlitPage() {
                   <div key={id} className="group cursor-pointer" onClick={() => nav('/hlutur/' + id)}>
                     <div className="flex items-center justify-between mb-1">
                       <div className="flex items-center gap-2">
-                        <span className="text-xs font-bold text-teal-600 bg-teal-50 w-6 h-6 rounded-full flex items-center justify-center">{idx + 1}</span>
-                        <span className="text-sm font-medium text-gray-900 group-hover:text-teal-600 transition-colors">{data.title}</span>
+                        <span className="text-xs font-bold text-brand-600 bg-brand-50 w-6 h-6 rounded-full flex items-center justify-center">{idx + 1}</span>
+                        <span className="text-sm font-medium text-gray-900 group-hover:text-brand-600 transition-colors">{data.title}</span>
                       </div>
                       <div className="text-right">
                         <span className="text-sm font-bold text-gray-900">{data.total.toLocaleString('is-IS')} kr</span>
@@ -292,7 +292,7 @@ export default function TekjuyfirlitPage() {
                       </div>
                     </div>
                     <div className="w-full bg-gray-100 rounded-full h-1.5">
-                      <div className="bg-gradient-to-r from-teal-400 to-teal-600 h-1.5 rounded-full transition-all duration-700" style={{ width: `${pct}%` }} />
+                      <div className="bg-gradient-to-r from-brand-400 to-brand-600 h-1.5 rounded-full transition-all duration-700" style={{ width: `${pct}%` }} />
                     </div>
                   </div>
                 );

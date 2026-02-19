@@ -1,11 +1,11 @@
 {
-  "name": "Leigja — Leigumarkaður Íslands",
-  "short_name": "Leigja",
+  "name": "Lendó — Leigumarkaður Íslands",
+  "short_name": "Lendó",
   "description": "Finndu og leigðu hluti nálægt þér",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#0d9488",
+  "theme_color": "#1B4D3E",
   "orientation": "portrait-primary",
   "icons": [
     { "src": "/icons/icon-192.svg", "sizes": "192x192", "type": "image/svg+xml" },

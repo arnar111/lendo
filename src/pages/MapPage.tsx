@@ -31,7 +31,7 @@ export default function MapPage() {
           <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" attribution="OpenStreetMap" />
           {active.map(item => (
             <Marker key={item.id} position={[item.location.lat, item.location.lng]}>
-              <Popup><div className="text-sm"><p className="font-semibold">{item.title}</p><p className="text-teal-600 font-bold">{item.pricePerDayISK.toLocaleString('is-IS')} kr/dag</p><button onClick={() => nav('/hlutur/' + item.id)} className="mt-1 text-teal-600 underline text-xs">Skoða</button></div></Popup>
+              <Popup><div className="text-sm"><p className="font-semibold">{item.title}</p><p className="text-brand-600 font-bold">{item.pricePerDayISK.toLocaleString('is-IS')} kr/dag</p><button onClick={() => nav('/hlutur/' + item.id)} className="mt-1 text-brand-600 underline text-xs">Skoða</button></div></Popup>
             </Marker>
           ))}
         </MapContainer>

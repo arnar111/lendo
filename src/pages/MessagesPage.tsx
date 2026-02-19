@@ -22,10 +22,10 @@ export default function MessagesPage() {
             const t = c.lastMessageAt ? new Date(c.lastMessageAt).toLocaleString('is-IS', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) : '';
             return (
               <button key={c.id} onClick={() => nav('/skilabod/' + c.id)} className="w-full flex items-center gap-3 px-4 py-3 hover:bg-gray-50 text-left">
-                <div className="w-12 h-12 rounded-full bg-teal-100 flex items-center justify-center text-teal-700 font-bold shrink-0 overflow-hidden">{o?.photoURL ? <img src={o.photoURL} className="w-full h-full object-cover" /> : (o?.displayName.charAt(0) || '?')}</div>
+                <div className="w-12 h-12 rounded-full bg-brand-100 flex items-center justify-center text-brand-700 font-bold shrink-0 overflow-hidden">{o?.photoURL ? <img src={o.photoURL} className="w-full h-full object-cover" /> : (o?.displayName.charAt(0) || '?')}</div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between"><p className="font-semibold text-sm truncate">{o?.displayName || 'Notandi'}</p><span className="text-xs text-gray-400 shrink-0">{t}</span></div>
-                  {c.itemTitle && <p className="text-xs text-teal-600 truncate">{c.itemTitle}</p>}
+                  {c.itemTitle && <p className="text-xs text-brand-600 truncate">{c.itemTitle}</p>}
                   {c.lastMessageText && <p className="text-sm text-gray-500 truncate">{c.lastMessageText}</p>}
                 </div>
               </button>

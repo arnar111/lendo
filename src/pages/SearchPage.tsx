@@ -29,12 +29,12 @@ export default function SearchPage() {
         <div className="relative mb-3">
           <Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
           <input type="text" value={q} onChange={e => setQ(e.target.value)} placeholder="Leita\u2026" autoFocus
-            className="w-full pl-10 pr-10 py-2.5 bg-gray-100 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-teal-300" />
+            className="w-full pl-10 pr-10 py-2.5 bg-gray-100 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-300" />
           {q && <button onClick={() => setQ('')} className="absolute right-3 top-1/2 -translate-y-1/2"><X size={18} className="text-gray-400" /></button>}
         </div>
         <div className="flex gap-2 overflow-x-auto pb-1">
           {CATEGORIES.map(c => <button key={c.id} onClick={() => setCat(cat === c.id ? null : c.id)}
-            className={`px-3 py-1.5 rounded-full text-xs whitespace-nowrap ${cat === c.id ? 'bg-teal-600 text-white' : 'bg-gray-100 text-gray-700'}`}>{c.icon} {c.label}</button>)}
+            className={`px-3 py-1.5 rounded-full text-xs whitespace-nowrap ${cat === c.id ? 'bg-brand-600 text-white' : 'bg-gray-100 text-gray-700'}`}>{c.icon} {c.label}</button>)}
         </div>
         <div className="flex gap-2 mt-2 items-center text-sm">
           <input type="number" value={pMin || ''} onChange={e => setPMin(Number(e.target.value))} placeholder="Lágm." className="w-20 px-2 py-1.5 border rounded-lg text-xs" />

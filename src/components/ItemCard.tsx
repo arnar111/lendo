@@ -16,7 +16,7 @@ export default function ItemCard({ item, distance }: { item: Item; distance?: nu
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow">
           <div className="aspect-[4/3] relative overflow-hidden">
             <img src={item.photos[0]} alt={item.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" />
-            <div className="absolute top-2 right-2 bg-white/90 backdrop-blur-sm rounded-full px-2.5 py-1 text-sm font-bold text-teal-700">
+            <div className="absolute top-2 right-2 bg-white/90 backdrop-blur-sm rounded-full px-2.5 py-1 text-sm font-bold text-brand-700">
               {item.pricePerDayISK.toLocaleString('is-IS')} kr/dag
             </div>
           </div>

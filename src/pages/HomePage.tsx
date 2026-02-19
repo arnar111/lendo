@@ -46,23 +46,23 @@ export default function HomePage() {
             <h1 className="text-2xl font-bold text-gradient">Lendó</h1>
             <div className="flex items-center gap-2">
               <Link to="/uppahalds" className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center"><Heart size={16} className="text-gray-500" /></Link>
-              {user ? <Link to="/profill" className="w-8 h-8 rounded-full bg-teal-100 flex items-center justify-center text-teal-700 font-semibold text-sm">{user.displayName.charAt(0)}</Link>
-                : <Link to="/innskraning" className="text-sm font-medium text-teal-600">Innskrá</Link>}
+              {user ? <Link to="/profill" className="w-8 h-8 rounded-full bg-brand-100 flex items-center justify-center text-brand-700 font-semibold text-sm">{user.displayName.charAt(0)}</Link>
+                : <Link to="/innskraning" className="text-sm font-medium text-brand-600">Innskrá</Link>}
             </div>
           </div>
           <div className="relative">
             <Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
             <input type="text" placeholder="Leita að hlutum..." value={q} onChange={e => setQ(e.target.value)}
-              className="w-full pl-10 pr-10 py-2.5 bg-gray-100 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-teal-300" />
+              className="w-full pl-10 pr-10 py-2.5 bg-gray-100 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-300" />
             <button onClick={() => setShowF(!showF)} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500"><SlidersHorizontal size={18} /></button>
           </div>
           <div className="flex items-center gap-2 mt-2 text-sm">
-            <button onClick={requestLocation} className="flex items-center gap-1 text-teal-600">
-              <Navigation size={14} className={hasRealLocation ? 'fill-teal-600' : ''} />
+            <button onClick={requestLocation} className="flex items-center gap-1 text-brand-600">
+              <Navigation size={14} className={hasRealLocation ? 'fill-brand-600' : ''} />
               <span className="text-xs">{hasRealLocation ? 'GPS' : 'Sjálfgefið'}</span>
             </button>
             <div className="flex gap-1">{RADII.map(r => (
-              <button key={r} onClick={() => setRadius(r)} className={`px-2.5 py-1 rounded-full text-xs font-medium ${radius === r ? 'bg-teal-600 text-white' : 'bg-gray-100 text-gray-600'}`}>{r}km</button>
+              <button key={r} onClick={() => setRadius(r)} className={`px-2.5 py-1 rounded-full text-xs font-medium ${radius === r ? 'bg-brand-600 text-white' : 'bg-gray-100 text-gray-600'}`}>{r}km</button>
             ))}</div>
           </div>
         </div>
@@ -73,8 +73,8 @@ export default function HomePage() {
           <div className="flex items-center justify-between mb-3"><h3 className="font-semibold">Síur</h3><button onClick={() => setShowF(false)}><X size={20} className="text-gray-400" /></button></div>
           <p className="text-sm text-gray-600 mb-2">Flokkur</p>
           <div className="flex flex-wrap gap-2 mb-4">
-            <button onClick={() => setCat(null)} className={`px-3 py-1.5 rounded-full text-sm ${!cat ? 'bg-teal-600 text-white' : 'bg-gray-100'}`}>Allt</button>
-            {CATEGORIES.map(c => <button key={c.id} onClick={() => setCat(cat === c.id ? null : c.id)} className={`px-3 py-1.5 rounded-full text-sm ${cat === c.id ? 'bg-teal-600 text-white' : 'bg-gray-100'}`}>{c.icon} {c.label}</button>)}
+            <button onClick={() => setCat(null)} className={`px-3 py-1.5 rounded-full text-sm ${!cat ? 'bg-brand-600 text-white' : 'bg-gray-100'}`}>Allt</button>
+            {CATEGORIES.map(c => <button key={c.id} onClick={() => setCat(cat === c.id ? null : c.id)} className={`px-3 py-1.5 rounded-full text-sm ${cat === c.id ? 'bg-brand-600 text-white' : 'bg-gray-100'}`}>{c.icon} {c.label}</button>)}
           </div>
           <p className="text-sm text-gray-600 mb-2">Verðbil (kr/dag)</p>
           <div className="flex gap-2 items-center">
@@ -82,14 +82,14 @@ export default function HomePage() {
             <span>–</span>
             <input type="number" value={pMax} onChange={e => setPMax(Number(e.target.value))} className="w-24 px-3 py-2 border rounded-lg text-sm" />
           </div>
-          <button onClick={() => setShowF(false)} className="w-full mt-4 py-2.5 bg-teal-600 text-white rounded-xl font-medium text-sm">Sýna ({filtered.length})</button>
+          <button onClick={() => setShowF(false)} className="w-full mt-4 py-2.5 bg-brand-600 text-white rounded-xl font-medium text-sm">Sýna ({filtered.length})</button>
         </div>
       )}
 
       <div className="max-w-lg mx-auto px-4 py-3 overflow-x-auto scrollbar-hide">
         <div className="flex gap-2 min-w-max">
           {CATEGORIES.map(c => <button key={c.id} onClick={() => setCat(cat === c.id ? null : c.id)}
-            className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm whitespace-nowrap ${cat === c.id ? 'bg-teal-600 text-white' : 'bg-white border border-gray-200 text-gray-700'}`}>
+            className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm whitespace-nowrap ${cat === c.id ? 'bg-brand-600 text-white' : 'bg-white border border-gray-200 text-gray-700'}`}>
             <span>{c.icon}</span><span>{c.label}</span>
           </button>)}
         </div>
@@ -99,10 +99,10 @@ export default function HomePage() {
         <div className="flex items-center justify-between mb-3">
           <div className="flex gap-1 bg-gray-100 rounded-lg p-0.5">
             {([['near','Nálægt'],['new','Nýjast'],['popular','Vinsælt'],['price','Verð']] as [SortMode,string][]).map(([k,l]) => (
-              <button key={k} onClick={() => setSort(k)} className={`px-2.5 py-1 rounded-md text-xs font-medium transition-all ${sort === k ? 'bg-white shadow-sm text-teal-700' : 'text-gray-500'}`}>{l}</button>
+              <button key={k} onClick={() => setSort(k)} className={`px-2.5 py-1 rounded-md text-xs font-medium transition-all ${sort === k ? 'bg-white shadow-sm text-brand-700' : 'text-gray-500'}`}>{l}</button>
             ))}
           </div>
-          <Link to="/kort" className="text-sm text-teal-600 font-medium flex items-center gap-1"><MapPin size={14} /> Kort</Link>
+          <Link to="/kort" className="text-sm text-brand-600 font-medium flex items-center gap-1"><MapPin size={14} /> Kort</Link>
         </div>
         <p className="text-xs text-gray-400 mb-3">{filtered.length} hlutir innan {radius}km</p>
         {filtered.length === 0 ? (

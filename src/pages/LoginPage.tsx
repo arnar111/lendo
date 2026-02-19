@@ -56,17 +56,17 @@ export default function LoginPage() {
       const available = await (window.PublicKeyCredential as any).isUserVerifyingPlatformAuthenticatorAvailable?.();
       if (!available) { setErr('Face ID / fingrafar er ekki tiltækt á þessu tæki'); return; }
       // TODO: Wire up WebAuthn when ready
-      await login('passkey-user@leigja.is', 'passkey');
+      await login('passkey-user@lendo.is', 'passkey');
       nav('/');
     } catch { setErr('Villa við Passkey innskráningu'); }
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-teal-600 to-teal-800 flex items-center justify-center px-4">
+    <div className="min-h-screen bg-gradient-to-br from-brand-600 to-brand-800 flex items-center justify-center px-4">
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-white mb-2">Leigja</h1>
-          <p className="text-teal-200">Leigðu hluti í nærumhverfinu</p>
+          <h1 className="text-4xl font-bold text-white mb-2">Lendó</h1>
+          <p className="text-brand-200">Leigðu hluti í nærumhverfinu</p>
         </div>
         <div className="bg-white rounded-2xl shadow-xl p-6 space-y-4">
           {err && <p className="text-red-500 text-sm bg-red-50 rounded-lg p-2">{err}</p>}
@@ -82,7 +82,7 @@ export default function LoginPage() {
             Halda áfram með Apple
           </button>
 
-          <button onClick={handlePasskey} type="button" disabled={loading} className="w-full py-3 border-2 border-teal-200 text-teal-700 rounded-xl text-sm font-medium hover:bg-teal-50 flex items-center justify-center gap-3 disabled:opacity-50">
+          <button onClick={handlePasskey} type="button" disabled={loading} className="w-full py-3 border-2 border-brand-200 text-brand-700 rounded-xl text-sm font-medium hover:bg-brand-50 flex items-center justify-center gap-3 disabled:opacity-50">
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M7 11.5V14m0-2.5v-6a1.5 1.5 0 113 0m-3 6a1.5 1.5 0 00-3 0v2a7.5 7.5 0 0015 0v-5a1.5 1.5 0 00-3 0m-6-3V11m0-5.5v-1a1.5 1.5 0 013 0v1m0 0V11m0-5.5a1.5 1.5 0 013 0v3m0 0V11" /></svg>
             Face ID / Fingrafar
           </button>
@@ -93,9 +93,9 @@ export default function LoginPage() {
           </div>
 
           <form onSubmit={go} className="space-y-3">
-            <input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="Netfang" className="w-full px-4 py-2.5 rounded-xl bg-gray-100 text-sm border-0 focus:ring-2 focus:ring-teal-500" />
-            <input type="password" value={pw} onChange={e => setPw(e.target.value)} placeholder="Lykilorð" className="w-full px-4 py-2.5 rounded-xl bg-gray-100 text-sm border-0 focus:ring-2 focus:ring-teal-500" />
-            <button type="submit" disabled={loading} className="w-full py-3 bg-teal-600 text-white rounded-xl font-semibold text-sm hover:bg-teal-700 disabled:opacity-50">
+            <input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="Netfang" className="w-full px-4 py-2.5 rounded-xl bg-gray-100 text-sm border-0 focus:ring-2 focus:ring-brand-500" />
+            <input type="password" value={pw} onChange={e => setPw(e.target.value)} placeholder="Lykilorð" className="w-full px-4 py-2.5 rounded-xl bg-gray-100 text-sm border-0 focus:ring-2 focus:ring-brand-500" />
+            <button type="submit" disabled={loading} className="w-full py-3 bg-brand-600 text-white rounded-xl font-semibold text-sm hover:bg-brand-700 disabled:opacity-50">
               {loading ? 'Augnablik...' : 'Skrá inn'}
             </button>
           </form>
@@ -103,7 +103,7 @@ export default function LoginPage() {
           <div className="text-center pt-2">
             <p className="text-sm text-gray-500">
               Ertu ekki með aðgang?{' '}
-              <Link to="/nyskraning" className="text-teal-600 font-semibold hover:underline">Nýskráning</Link>
+              <Link to="/nyskraning" className="text-brand-600 font-semibold hover:underline">Nýskráning</Link>
             </p>
           </div>
         </div>

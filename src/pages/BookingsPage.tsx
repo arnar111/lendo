@@ -26,7 +26,7 @@ function BookingCard({ booking, isOwner, onAction }: { booking: Booking; isOwner
           <p className="text-xs text-gray-500 mt-0.5">{isOwner ? booking.renterName : booking.ownerName}</p>
           <div className="flex items-center gap-3 mt-1.5 text-xs text-gray-600">
             <span className="flex items-center gap-1"><Calendar size={12} />{booking.startDate} → {booking.endDate}</span>
-            <span className="font-semibold text-teal-700">{booking.totalISK.toLocaleString('is-IS')} kr</span>
+            <span className="font-semibold text-brand-700">{booking.totalISK.toLocaleString('is-IS')} kr</span>
           </div>
           {booking.message && <p className="text-xs text-gray-400 mt-1 truncate">"{booking.message}"</p>}
         </div>
@@ -37,7 +37,7 @@ function BookingCard({ booking, isOwner, onAction }: { booking: Booking; isOwner
         <div className="flex border-t">
           <button onClick={() => onAction(booking.id, 'rejected')} className="flex-1 py-2.5 text-sm font-medium text-red-600 hover:bg-red-50 flex items-center justify-center gap-1"><XCircle size={16} />Hafna</button>
           <div className="w-px bg-gray-200" />
-          <button onClick={() => onAction(booking.id, 'confirmed')} className="flex-1 py-2.5 text-sm font-medium text-teal-600 hover:bg-teal-50 flex items-center justify-center gap-1"><CheckCircle2 size={16} />Samþykkja</button>
+          <button onClick={() => onAction(booking.id, 'confirmed')} className="flex-1 py-2.5 text-sm font-medium text-brand-600 hover:bg-brand-50 flex items-center justify-center gap-1"><CheckCircle2 size={16} />Samþykkja</button>
         </div>
       )}
       {isOwner && booking.status === 'confirmed' && (
@@ -89,7 +89,7 @@ export default function BookingsPage() {
           </div>
           <div className="flex gap-1 bg-gray-100 rounded-xl p-1">
             {TABS.map(t => (
-              <button key={t.id} onClick={() => setTab(t.id)} className={`flex-1 py-2 rounded-lg text-sm font-medium transition-all ${tab === t.id ? 'bg-white shadow-sm text-teal-700' : 'text-gray-500'}`}>
+              <button key={t.id} onClick={() => setTab(t.id)} className={`flex-1 py-2 rounded-lg text-sm font-medium transition-all ${tab === t.id ? 'bg-white shadow-sm text-brand-700' : 'text-gray-500'}`}>
                 {t.label}
               </button>
             ))}

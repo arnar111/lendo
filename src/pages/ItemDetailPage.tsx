@@ -87,7 +87,7 @@ export default function ItemDetailPage() {
         {/* Title + price */}
         <div className="flex items-start justify-between gap-3">
           <div><h1 className="text-xl font-bold">{item.title}</h1>{cat && <span className="text-sm text-gray-500">{cat.icon} {cat.label}</span>}</div>
-          <div className="text-right shrink-0"><p className="text-xl font-bold text-teal-600">{item.pricePerDayISK.toLocaleString('is-IS')} kr</p><p className="text-xs text-gray-500">á dag</p></div>
+          <div className="text-right shrink-0"><p className="text-xl font-bold text-brand-600">{item.pricePerDayISK.toLocaleString('is-IS')} kr</p><p className="text-xs text-gray-500">á dag</p></div>
         </div>
 
         {item.ratingCount > 0 && <div className="flex items-center gap-1.5 mt-2 text-sm"><Star size={16} className="text-amber-400 fill-amber-400" /><span className="font-semibold">{item.ratingAvg.toFixed(1)}</span><span className="text-gray-500">({item.ratingCount} umsagnir)</span></div>}
@@ -109,11 +109,11 @@ export default function ItemDetailPage() {
         <div className="mt-5"><h2 className="font-semibold mb-2">Lýsing</h2><p className="text-sm text-gray-700 leading-relaxed">{item.description}</p></div>
 
         {/* Location */}
-        <div className="mt-5"><h2 className="font-semibold mb-2">Staðsetning</h2><p className="text-sm text-gray-600 flex items-center gap-1.5"><MapPin size={16} className="text-teal-500" />{item.location.city}{item.location.postalCode ? ', ' + item.location.postalCode : ''}</p></div>
+        <div className="mt-5"><h2 className="font-semibold mb-2">Staðsetning</h2><p className="text-sm text-gray-600 flex items-center gap-1.5"><MapPin size={16} className="text-brand-500" />{item.location.city}{item.location.postalCode ? ', ' + item.location.postalCode : ''}</p></div>
 
         {/* Owner */}
         {owner && <Link to={'/profill/' + owner.uid} className="mt-5 flex items-center gap-3 bg-gray-50 rounded-xl p-3">
-          <div className="w-12 h-12 rounded-full bg-teal-100 flex items-center justify-center text-teal-700 font-bold text-lg overflow-hidden">{owner.photoURL ? <img src={owner.photoURL} className="w-full h-full object-cover" /> : owner.displayName.charAt(0)}</div>
+          <div className="w-12 h-12 rounded-full bg-brand-100 flex items-center justify-center text-brand-700 font-bold text-lg overflow-hidden">{owner.photoURL ? <img src={owner.photoURL} className="w-full h-full object-cover" /> : owner.displayName.charAt(0)}</div>
           <div className="flex-1">
             <p className="font-semibold flex items-center gap-1">{owner.displayName}{owner.verified && <BadgeCheck size={16} className="text-blue-500" />}</p>
             {owner.ratingCountAsOwner > 0 && <p className="text-sm text-gray-500 flex items-center gap-1"><Star size={12} className="text-amber-400 fill-amber-400" />{owner.ratingAsOwnerAvg.toFixed(1)} ({owner.ratingCountAsOwner})</p>}
@@ -129,8 +129,8 @@ export default function ItemDetailPage() {
 
         {/* Booking form */}
         {showBook && !bookSent && user && user.uid !== item.ownerId && (
-          <div className="mt-5 bg-teal-50 rounded-2xl p-4 animate-slide-up">
-            <h3 className="font-semibold mb-3 flex items-center gap-2"><Calendar size={18} className="text-teal-600" />Bóka hlut</h3>
+          <div className="mt-5 bg-brand-50 rounded-2xl p-4 animate-slide-up">
+            <h3 className="font-semibold mb-3 flex items-center gap-2"><Calendar size={18} className="text-brand-600" />Bóka hlut</h3>
             <div className="grid grid-cols-2 gap-3 mb-3">
               <div><label className="text-xs font-medium text-gray-600 mb-1 block">Frá</label><input type="date" min={today} value={startDate} onChange={e => { setStartDate(e.target.value); if (endDate && e.target.value > endDate) setEndDate(''); }} className="w-full px-3 py-2 border rounded-lg text-sm" /></div>
               <div><label className="text-xs font-medium text-gray-600 mb-1 block">Til</label><input type="date" min={startDate || today} value={endDate} onChange={e => setEndDate(e.target.value)} className="w-full px-3 py-2 border rounded-lg text-sm" /></div>
@@ -141,10 +141,10 @@ export default function ItemDetailPage() {
                 <div className="flex justify-between"><span className="text-gray-600">{item.pricePerDayISK.toLocaleString('is-IS')} kr × {days} {days === 1 ? 'dagur' : 'dagar'}</span><span className="font-medium">{totalISK.toLocaleString('is-IS')} kr</span></div>
                 <div className="flex justify-between"><span className="text-gray-600">Þjónustugjald (12%)</span><span className="font-medium">{serviceFee.toLocaleString('is-IS')} kr</span></div>
                 {item.depositISK && <div className="flex justify-between text-amber-700"><span>Trygging (endurgreidd)</span><span className="font-medium">{item.depositISK.toLocaleString('is-IS')} kr</span></div>}
-                <div className="border-t pt-1.5 flex justify-between font-bold"><span>Samtals</span><span className="text-teal-700">{(totalISK + serviceFee).toLocaleString('is-IS')} kr</span></div>
+                <div className="border-t pt-1.5 flex justify-between font-bold"><span>Samtals</span><span className="text-brand-700">{(totalISK + serviceFee).toLocaleString('is-IS')} kr</span></div>
               </div>
             )}
-            <button onClick={book} disabled={!startDate || !endDate} className="w-full py-3 bg-teal-600 text-white rounded-xl font-semibold text-sm disabled:opacity-40">Senda bókunarbeiðni</button>
+            <button onClick={book} disabled={!startDate || !endDate} className="w-full py-3 bg-brand-600 text-white rounded-xl font-semibold text-sm disabled:opacity-40">Senda bókunarbeiðni</button>
           </div>
         )}
         {bookSent && (
@@ -157,8 +157,8 @@ export default function ItemDetailPage() {
 
         {/* Reviews */}
         <div className="mt-6">
-          <div className="flex items-center justify-between mb-3"><h2 className="font-semibold">Umsagnir</h2>{user && user.uid !== item.ownerId && <button onClick={() => setShowRF(!showRF)} className="text-sm text-teal-600 font-medium">+ Skrifa</button>}</div>
-          {showRF && <div className="bg-gray-50 rounded-xl p-4 mb-4"><StarRating rating={rr} onChange={setRR} /><textarea value={rt} onChange={e => setRT(e.target.value)} placeholder="Segðu frá..." className="w-full mt-2 p-2 border rounded-lg text-sm resize-none h-20" /><button onClick={rev} className="mt-2 px-4 py-2 bg-teal-600 text-white rounded-lg text-sm font-medium">Senda</button></div>}
+          <div className="flex items-center justify-between mb-3"><h2 className="font-semibold">Umsagnir</h2>{user && user.uid !== item.ownerId && <button onClick={() => setShowRF(!showRF)} className="text-sm text-brand-600 font-medium">+ Skrifa</button>}</div>
+          {showRF && <div className="bg-gray-50 rounded-xl p-4 mb-4"><StarRating rating={rr} onChange={setRR} /><textarea value={rt} onChange={e => setRT(e.target.value)} placeholder="Segðu frá..." className="w-full mt-2 p-2 border rounded-lg text-sm resize-none h-20" /><button onClick={rev} className="mt-2 px-4 py-2 bg-brand-600 text-white rounded-lg text-sm font-medium">Senda</button></div>}
           {revs.length === 0 ? <p className="text-sm text-gray-500">Engar umsagnir ennþá</p> : <div className="space-y-3">{revs.map(r => <div key={r.id} className="bg-gray-50 rounded-xl p-3"><div className="flex items-center gap-2 mb-1"><span className="font-medium text-sm">{r.authorDisplayName}</span><StarRating rating={r.rating} size={14} /></div>{r.text && <p className="text-sm text-gray-700">{r.text}</p>}</div>)}</div>}
         </div>
       </div>
@@ -167,8 +167,8 @@ export default function ItemDetailPage() {
       {(!user || user.uid !== item.ownerId) && !bookSent && (
         <div className="fixed bottom-16 left-0 right-0 bg-white border-t px-4 py-3 z-40 safe-area-bottom">
           <div className="max-w-lg mx-auto flex gap-2">
-            <button onClick={msg} className="flex-1 py-3 border-2 border-teal-600 text-teal-600 rounded-xl font-semibold flex items-center justify-center gap-2 text-sm"><MessageCircle size={18} />Spjall</button>
-            <button onClick={() => { if (!user) { nav('/innskraning'); return; } setShowBook(!showBook); }} className="flex-[2] py-3 bg-teal-600 text-white rounded-xl font-semibold flex items-center justify-center gap-2 text-sm"><Calendar size={18} />Bóka</button>
+            <button onClick={msg} className="flex-1 py-3 border-2 border-brand-600 text-brand-600 rounded-xl font-semibold flex items-center justify-center gap-2 text-sm"><MessageCircle size={18} />Spjall</button>
+            <button onClick={() => { if (!user) { nav('/innskraning'); return; } setShowBook(!showBook); }} className="flex-[2] py-3 bg-brand-600 text-white rounded-xl font-semibold flex items-center justify-center gap-2 text-sm"><Calendar size={18} />Bóka</button>
           </div>
         </div>
       )}
