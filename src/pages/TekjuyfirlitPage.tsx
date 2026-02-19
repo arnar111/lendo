@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Navigate } from 'react-router-dom';
 import { ArrowLeft, TrendingUp, Award, Flame, Target, ChevronRight, Star, Calendar, DollarSign } from 'lucide-react';
 import { useAuth, useItems, useReviews, useBookings } from '../store/useStore';
 

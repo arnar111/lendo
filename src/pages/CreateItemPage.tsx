@@ -73,7 +73,11 @@ export default function CreateItemPage() {
       depositISK: deposit ? Number(deposit) : undefined,
       location: { lat: location.lat + (Math.random() - 0.5) * 0.01, lng: location.lng + (Math.random() - 0.5) * 0.02, city: 'Reykjavík', postalCode: '101' },
     });
-    setTimeout(() => nav('/hlutur/' + item.id), 500);
+    const resolve = async () => {
+      const resolved = await item;
+      nav('/hlutur/' + resolved.id);
+    };
+    setTimeout(() => resolve(), 500);
   };
 
   const totalSteps = 4;

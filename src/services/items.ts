@@ -1,6 +1,6 @@
 import {
   collection, doc, addDoc, getDoc, getDocs, updateDoc, query, where, orderBy, onSnapshot,
-  serverTimestamp, type Unsubscribe, limit as firestoreLimit,
+  serverTimestamp, type Unsubscribe, limit as firestoreLimit, type QueryConstraint,
 } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { geohashForLocation, geohashQueryBounds, distanceBetween } from 'geofire-common';
@@ -67,7 +67,7 @@ export interface ItemFilters {
 }
 
 export async function queryItems(filters: ItemFilters = {}): Promise<Item[]> {
-  const constraints = [where('status', '==', filters.status || 'virkt')];
+  const constraints: QueryConstraint[] = [where('status', '==', filters.status || 'virkt')];
   if (filters.categoryId) constraints.push(where('categoryId', '==', filters.categoryId));
   if (filters.minPrice !== undefined) constraints.push(where('pricePerDayISK', '>=', filters.minPrice));
   if (filters.maxPrice !== undefined) constraints.push(where('pricePerDayISK', '<=', filters.maxPrice));

@@ -57,7 +57,7 @@ export default function ItemDetailPage() {
       ownerId: item.ownerId, ownerName: item.ownerDisplayName,
       renterId: user.uid, renterName: user.displayName,
       startDate, endDate, days,
-      totalISK, depositISK: item.depositISK || 0, serviceFeeISK: serviceFee,
+      totalISK, depositISK: item.depositISK || 0,
       message: bookMsg || undefined,
     });
     setBookSent(true);
